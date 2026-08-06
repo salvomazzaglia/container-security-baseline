@@ -1,0 +1,13 @@
+# Synthetic .dockerignore for project-root scan fixtures
+.git
+.gitignore
+*.md
+*.log
+.env
+.env.*
+secrets/
+tmp/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store

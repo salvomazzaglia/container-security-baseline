@@ -1,0 +1,42 @@
+# SYNTHETIC EXAMPLE — intentionally insecure for rule demonstration.
+# All hosts, registries, secrets, and service names are fake.
+# Do not run. Do not use in production.
+
+services:
+  synthetic-web:
+    image: registry.example.invalid/synthetic-web:latest
+    privileged: true
+    pid: host
+    network_mode: host
+    user: "0:0"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc:/etc
+    ports:
+      - "*:8080"
+    environment:
+      API_SECRET: SYNTHETIC_NOT_A_REAL_SECRET
+      DATABASE_PASSWORD: SYNTHETIC_NOT_A_REAL_SECRET
+    # Intentionally missing: deploy.resources, healthcheck, logging limits
+
+  synthetic-api:
+    image: registry.example.invalid/synthetic-api:latest
+    privileged: true
+    user: root
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - /etc/passwd:/etc/passwd:rw
+    ports:
+      - "*:3000"
+    environment:
+      TOKEN: SYNTHETIC_NOT_A_REAL_SECRET
+    logging:
+      driver: json-file
+      # Intentionally unbounded (no max-size / max-file)

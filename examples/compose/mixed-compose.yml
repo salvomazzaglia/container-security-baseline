@@ -1,0 +1,130 @@
+# SYNTHETIC EXAMPLE — mixed good and bad practices across services.
+# All hosts, registries, secrets, and service names are fake.
+# Do not run. For scanner regression and documentation only.
+
+services:
+  synthetic-web:
+    image: registry.example.invalid/synthetic-web:1.4.0@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    user: "10001:10001"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    networks:
+      - frontend
+      - backend
+    ports:
+      - "127.0.0.1:8080:8080"
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck", "http://127.0.0.1:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+          pids: 100
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  synthetic-api:
+    # Bad: floating latest tag, root user, no resource limits
+    image: registry.example.invalid/synthetic-api:latest
+    user: root
+    networks:
+      - backend
+    ports:
+      - "3000:3000"
+    environment:
+      API_TOKEN: SYNTHETIC_NOT_A_REAL_SECRET
+    # Missing healthcheck, cap_drop, no-new-privileges, logging bounds
+
+  synthetic-database:
+    image: registry.example.invalid/synthetic-database:15.2@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+    user: "10003:10003"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - synthetic-db-data:/var/lib/synthetic-db
+    networks:
+      - backend
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck", "pg"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 1G
+          pids: 300
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  synthetic-worker:
+    # Bad: privileged + docker.sock (critical isolation failures)
+    image: registry.example.invalid/synthetic-worker:latest
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - backend
+    environment:
+      WORKER_SECRET: SYNTHETIC_NOT_A_REAL_SECRET
+
+  synthetic-monitor:
+    image: registry.example.invalid/synthetic-monitor:3.1.0@sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    user: "10005:10005"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - backend
+    expose:
+      - "9090"
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck", "http://127.0.0.1:9090/-/ready"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    # Mild gap: no explicit memory/pids limits
+
+  synthetic-admin:
+    # Bad: host network + wildcard publish + writable /etc
+    image: registry.example.invalid/synthetic-admin:latest
+    network_mode: host
+    user: "0"
+    volumes:
+      - /etc:/etc:rw
+    ports:
+      - "*:8443"
+    environment:
+      ADMIN_PASSWORD: SYNTHETIC_NOT_A_REAL_SECRET
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+    internal: true
+
+volumes:
+  synthetic-db-data:

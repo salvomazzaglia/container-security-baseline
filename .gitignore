@@ -1,0 +1,77 @@
+# Generated analysis outputs
+reports/
+results/
+output/
+local/
+temp/
+tmp/
+downloads/
+
+# Environment and secrets
+.env
+.env.*
+*.env
+!examples/**/*.env.example
+*.secret
+*.token
+*.key
+*.pem
+*.pfx
+*.p12
+*.cer
+*.crt
+*.kubeconfig
+auth.json
+config.json
+
+# Local Compose overrides
+docker-compose.override.yml
+compose.override.yml
+
+# Local configuration
+config/local.config.json
+config/local.policy.json
+config/local-suppressions.json
+
+# Docker client state
+.docker/
+
+# Test and coverage artifacts
+test-results/
+coverage.xml
+htmlcov/
+.coverage
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+.eggs/
+*.whl
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary extract helpers (development only)
+_requirements_extract.txt

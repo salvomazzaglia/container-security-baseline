@@ -1,0 +1,123 @@
+{
+  "parser": {
+    "maximum_file_bytes": 2097152,
+    "maximum_depth": 50,
+    "maximum_nodes": 50000,
+    "maximum_aliases": 100,
+    "maximum_scalar_length": 262144,
+    "maximum_sequence_length": 10000,
+    "maximum_mapping_size": 10000,
+    "maximum_documents": 1,
+    "reject_duplicate_keys": true,
+    "reject_custom_tags": true
+  },
+  "analysis": {
+    "follow_symlinks": false,
+    "read_referenced_files": false,
+    "resolve_interpolation": false,
+    "invoke_docker": false,
+    "network_access": false
+  },
+  "discovery": {
+    "compose_names": [
+      "compose.yml",
+      "compose.yaml",
+      "docker-compose.yml",
+      "docker-compose.yaml"
+    ],
+    "dockerfile_names": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ]
+  },
+  "secret_detection": {
+    "enabled": true,
+    "redact_all_values": true,
+    "maximum_value_length": 8192,
+    "high_entropy_min_length": 20,
+    "high_entropy_threshold": 4.5
+  },
+  "scoring": {
+    "starting_score": 100,
+    "deductions": {
+      "Critical": 25,
+      "High": 15,
+      "Medium": 7,
+      "Low": 2,
+      "Informational": 0
+    }
+  },
+  "policy": {
+    "default": "baseline",
+    "allow_critical_suppressions": false
+  },
+  "reporting": {
+    "formats": ["json", "html", "sarif"],
+    "privacy_mode": "masked",
+    "include_passed": false
+  },
+  "privacy": {
+    "mode": "masked",
+    "mask_absolute_paths": true
+  },
+  "path_masks": {
+    "user_home": "<USER_HOME>"
+  },
+  "remediation": {
+    "generate_patches": true,
+    "refuse_on_anchors": true,
+    "refuse_on_secrets_nearby": true
+  },
+  "logging": {
+    "level": "WARNING"
+  },
+  "sensitive_host_paths": [
+    "/etc",
+    "/proc",
+    "/sys",
+    "/dev",
+    "/boot",
+    "/root",
+    "/home",
+    "/var/run",
+    "/run",
+    "/var/lib/docker",
+    "/var/lib/containerd",
+    "/.docker",
+    "/.ssh",
+    "/.aws",
+    "/.azure",
+    "/.kube",
+    "/.gnupg"
+  ],
+  "dangerous_capabilities": {
+    "Critical": ["SYS_ADMIN", "SYS_MODULE", "SYS_RAWIO", "SYS_PTRACE"],
+    "High": ["DAC_READ_SEARCH", "DAC_OVERRIDE", "NET_ADMIN", "MAC_ADMIN", "SYS_BOOT", "AUDIT_CONTROL"],
+    "Medium": ["NET_RAW", "SYS_CHROOT", "MKNOD"]
+  },
+  "sensitive_ports": [2375, 2376, 2377, 3306, 5432, 6379, 27017, 9200, 11211, 5900, 3389, 22, 23],
+  "secret_key_patterns": [
+    "PASSWORD",
+    "PASSWD",
+    "SECRET",
+    "TOKEN",
+    "API_KEY",
+    "APIKEY",
+    "PRIVATE_KEY",
+    "CLIENT_SECRET",
+    "ACCESS_KEY",
+    "AUTH",
+    "CREDENTIAL"
+  ],
+  "package_debug_tools": [
+    "curl",
+    "wget",
+    "nmap",
+    "tcpdump",
+    "strace",
+    "gdb",
+    "netcat",
+    "nc",
+    "socat"
+  ]
+}

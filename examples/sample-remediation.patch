@@ -1,0 +1,96 @@
+# PROPOSED REMEDIATION ONLY — MANUAL REVIEW REQUIRED
+# Rules applied: CSB-CMP-001, CSB-CMP-004, CSB-CMP-022, CSB-CMP-026, CSB-CMP-040
+# Do not apply blindly. Validate application behavior.
+--- a/examples/compose/insecure-compose.yml
++++ b/examples/compose/insecure-compose.yml
+@@ -1,42 +1,48 @@
+-# SYNTHETIC EXAMPLE — intentionally insecure for rule demonstration.
+-# All hosts, registries, secrets, and service names are fake.
+-# Do not run. Do not use in production.
+-
+-services:
+-  synthetic-web:
+-    image: registry.example.invalid/synthetic-web:latest
+-    privileged: true
+-    pid: host
+-    network_mode: host
+-    user: "0:0"
+-    cap_add:
+-      - ALL
+-    security_opt:
+-      - seccomp:unconfined
+-    volumes:
+-      - /var/run/docker.sock:/var/run/docker.sock
+-      - /etc:/etc
+-    ports:
+-      - "*:8080"
+-    environment:
+-      API_SECRET: [REDACTED]
+-      DATABASE_PASSWORD: [REDACTED]
+-    # Intentionally missing: deploy.resources, healthcheck, logging limits
+-
+-  synthetic-api:
+-    image: registry.example.invalid/synthetic-api:latest
+-    privileged: true
+-    user: root
+-    cap_add:
+-      - SYS_ADMIN
+-      - NET_ADMIN
+-    volumes:
+-      - /var/run/docker.sock:/var/run/docker.sock:rw
+-      - /etc/passwd:[REDACTED]
+-    ports:
+-      - "*:3000"
+-    environment:
+-      TOKEN: [REDACTED]
+-    logging:
+-      driver: json-file
+-      # Intentionally unbounded (no max-size / max-file)
++# SYNTHETIC EXAMPLE — intentionally insecure for rule demonstration.
++# All hosts, registries, secrets, and service names are fake.
++# Do not run. Do not use in production.
++
++services:
++  synthetic-web:
++    image: registry.example.invalid/synthetic-web:latest
++    privileged: false
++    pid: host
++    network_mode: host
++    user: "0:0"
++    cap_add:
++      - ALL
++    security_opt:
++    - no-new-privileges:true
++      - seccomp:unconfined
++    volumes:
++      - /var/run/docker.sock:/var/run/docker.sock
++      - /etc:/etc
++    ports:
++      - "*:8080"
++    environment:
++      API_SECRET: [REDACTED]
++      DATABASE_PASSWORD: [REDACTED]
++    # Intentionally missing: deploy.resources, healthcheck, logging limits
++
++  synthetic-api:
++    image: registry.example.invalid/synthetic-api:latest
++    privileged: false
++    user: root
++    cap_add:
++      - SYS_ADMIN
++      - NET_ADMIN
++    volumes:
++      - /var/run/docker.sock:/var/run/docker.sock:ro
++      - /etc/passwd:[REDACTED]
++    ports:
++      - "*:3000"
++    environment:
++      TOKEN: [REDACTED]
++    logging:
++      driver: json-file
++      # Intentionally unbounded (no max-size / max-file)
++    cap_drop:
++      - ALL
++    security_opt:
++      - no-new-privileges:true
++    read_only: true

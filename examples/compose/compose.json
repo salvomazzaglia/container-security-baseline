@@ -1,0 +1,53 @@
+{
+  "services": {
+    "synthetic-web": {
+      "image": "registry.example.invalid/synthetic-web:1.0.0",
+      "user": "10001:10001",
+      "read_only": true,
+      "cap_drop": ["ALL"],
+      "security_opt": ["no-new-privileges:true"],
+      "ports": ["127.0.0.1:8080:8080"],
+      "networks": ["frontend"],
+      "healthcheck": {
+        "test": ["CMD", "/usr/local/bin/healthcheck", "http://127.0.0.1:8080/health"],
+        "interval": "30s",
+        "timeout": "5s",
+        "retries": 3
+      },
+      "deploy": {
+        "resources": {
+          "limits": {
+            "cpus": "0.50",
+            "memory": "256M",
+            "pids": 100
+          }
+        }
+      },
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "synthetic-api": {
+      "image": "registry.example.invalid/synthetic-api:latest",
+      "user": "root",
+      "ports": ["*:3000"],
+      "environment": {
+        "API_SECRET": "SYNTHETIC_NOT_A_REAL_SECRET"
+      },
+      "networks": ["backend"]
+    }
+  },
+  "networks": {
+    "frontend": {
+      "driver": "bridge"
+    },
+    "backend": {
+      "driver": "bridge",
+      "internal": true
+    }
+  }
+}

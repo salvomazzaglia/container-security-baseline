@@ -1,0 +1,3761 @@
+{
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "CSB-CMP-001",
+      "title": "privileged mode enabled",
+      "target": "compose",
+      "category": "Privilege",
+      "severity": "Critical",
+      "summary": "Service sets privileged: true.",
+      "risk": "Privileged mode significantly weakens container isolation and grants broad host access.",
+      "remediation": "Set privileged: false or remove the field.",
+      "detailed_remediation": "Set privileged: false or remove the field.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "safe",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "services.*.privileged == true",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-002",
+      "title": "Docker/runtime socket mounted",
+      "target": "compose",
+      "category": "Host access",
+      "severity": "Critical",
+      "summary": "A Docker/Podman runtime socket appears to be bind-mounted.",
+      "risk": "Mounting the runtime socket often equates to root-equivalent host control.",
+      "remediation": "Do not mount docker.sock/podman.sock; use least-privilege APIs or socket proxies if required.",
+      "detailed_remediation": "Do not mount docker.sock/podman.sock; use least-privilege APIs or socket proxies if required.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "A Docker/Podman runtime socket appears to be bind-mounted.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-003",
+      "title": "Host root filesystem bind-mounted",
+      "target": "compose",
+      "category": "Host access",
+      "severity": "Critical",
+      "summary": "Host root filesystem appears bind-mounted into the container.",
+      "risk": "Root bind mounts allow host filesystem compromise.",
+      "remediation": "Remove root bind mounts; mount only required subpaths read-only when necessary.",
+      "detailed_remediation": "Remove root bind mounts; mount only required subpaths read-only when necessary.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Host root filesystem appears bind-mounted into the container.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-004",
+      "title": "Sensitive host path mounted read-write",
+      "target": "compose",
+      "category": "Host access",
+      "severity": "High",
+      "summary": "Sensitive host path mounted read-write.",
+      "risk": "Writable sensitive mounts can expose or alter host credentials and configuration.",
+      "remediation": "Prefer read-only mounts or remove the mount; use named volumes for app data.",
+      "detailed_remediation": "Prefer read-only mounts or remove the mount; use named volumes for app data.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "safe",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Sensitive host path mounted read-write.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-005",
+      "title": "Sensitive host path mounted read-only",
+      "target": "compose",
+      "category": "Host access",
+      "severity": "Medium",
+      "summary": "Sensitive host path mounted read-only.",
+      "risk": "Read-only sensitive mounts may still expose secrets or host metadata.",
+      "remediation": "Avoid mounting sensitive host paths; use scoped files via secrets.",
+      "detailed_remediation": "Avoid mounting sensitive host paths; use scoped files via secrets.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Sensitive host path mounted read-only.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-006",
+      "title": "network_mode host",
+      "target": "compose",
+      "category": "Isolation",
+      "severity": "High",
+      "summary": "Service uses network_mode: host.",
+      "risk": "Host networking removes network namespace isolation.",
+      "remediation": "Use bridge/user-defined networks and publish only required ports.",
+      "detailed_remediation": "Use bridge/user-defined networks and publish only required ports.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Service uses network_mode: host.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-007",
+      "title": "pid host namespace",
+      "target": "compose",
+      "category": "Isolation",
+      "severity": "Critical",
+      "summary": "Service uses pid: host.",
+      "risk": "Host PID namespace can enable process visibility and attack primitives.",
+      "remediation": "Remove pid: host unless strictly required and suppressed with justification.",
+      "detailed_remediation": "Remove pid: host unless strictly required and suppressed with justification.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Service uses pid: host.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "development": "High"
+      }
+    },
+    {
+      "id": "CSB-CMP-008",
+      "title": "ipc host namespace",
+      "target": "compose",
+      "category": "Isolation",
+      "severity": "High",
+      "summary": "Service uses ipc: host.",
+      "risk": "Host IPC sharing weakens isolation between containers and host.",
+      "remediation": "Avoid ipc: host; use private IPC or share only between required services.",
+      "detailed_remediation": "Avoid ipc: host; use private IPC or share only between required services.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Service uses ipc: host.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-009",
+      "title": "userns_mode host",
+      "target": "compose",
+      "category": "Isolation",
+      "severity": "High",
+      "summary": "User namespace isolation disabled or set to host.",
+      "risk": "Disabling user namespaces can map container root to host root.",
+      "remediation": "Do not set userns_mode: host.",
+      "detailed_remediation": "Do not set userns_mode: host.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "User namespace isolation disabled or set to host.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-010",
+      "title": "device mappings present",
+      "target": "compose",
+      "category": "Host access",
+      "severity": "High",
+      "summary": "Service maps host devices into the container.",
+      "risk": "Device access can allow low-level host interaction.",
+      "remediation": "Map only required devices; prefer none.",
+      "detailed_remediation": "Map only required devices; prefer none.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Service maps host devices into the container.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-011",
+      "title": "broad device_cgroup_rules",
+      "target": "compose",
+      "category": "Host access",
+      "severity": "High",
+      "summary": "Broad device cgroup rules detected.",
+      "risk": "Broad cgroup device rules can grant excessive device access.",
+      "remediation": "Narrow device_cgroup_rules to the minimum required.",
+      "detailed_remediation": "Narrow device_cgroup_rules to the minimum required.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Broad device cgroup rules detected.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-012",
+      "title": "volumes_from used",
+      "target": "compose",
+      "category": "Filesystem",
+      "severity": "Medium",
+      "summary": "volumes_from shares another container filesystem.",
+      "risk": "Inherited volumes may unexpectedly share sensitive data.",
+      "remediation": "Declare explicit volumes instead of volumes_from.",
+      "detailed_remediation": "Declare explicit volumes instead of volumes_from.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "volumes_from shares another container filesystem.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-013",
+      "title": "legacy links or external_links",
+      "target": "compose",
+      "category": "Networking",
+      "severity": "Low",
+      "summary": "Service uses links or external_links.",
+      "risk": "Legacy linking is obsolete and complicates network trust boundaries.",
+      "remediation": "Use user-defined networks and service DNS names.",
+      "detailed_remediation": "Use user-defined networks and service DNS names.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Service uses links or external_links.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-020",
+      "title": "cap_add ALL",
+      "target": "compose",
+      "category": "Capabilities",
+      "severity": "Critical",
+      "summary": "Service adds ALL capabilities.",
+      "risk": "Adding ALL capabilities largely defeats capability-based least privilege.",
+      "remediation": "Remove cap_add ALL; add only required capabilities.",
+      "detailed_remediation": "Remove cap_add ALL; add only required capabilities.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Service adds ALL capabilities.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-021",
+      "title": "dangerous capabilities added",
+      "target": "compose",
+      "category": "Capabilities",
+      "severity": "High",
+      "summary": "Dangerous Linux capabilities are added.",
+      "risk": "Dangerous capabilities can enable privilege escalation or host interaction.",
+      "remediation": "Drop ALL and add only justified capabilities.",
+      "detailed_remediation": "Drop ALL and add only justified capabilities.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Dangerous Linux capabilities are added.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-022",
+      "title": "cap_drop missing",
+      "target": "compose",
+      "category": "Capabilities",
+      "severity": "Informational",
+      "summary": "No cap_drop configured.",
+      "risk": "Without dropping capabilities, the default set may be broader than needed.",
+      "remediation": "Add cap_drop: [ALL] and re-add only required capabilities.",
+      "detailed_remediation": "Add cap_drop: [ALL] and re-add only required capabilities.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "safe",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "No cap_drop configured.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "strict": "Low"
+      }
+    },
+    {
+      "id": "CSB-CMP-023",
+      "title": "cap_drop does not include ALL",
+      "target": "compose",
+      "category": "Capabilities",
+      "severity": "Low",
+      "summary": "cap_drop is present but does not drop ALL.",
+      "risk": "Partial drops may leave dangerous capabilities.",
+      "remediation": "Prefer cap_drop: [ALL].",
+      "detailed_remediation": "Prefer cap_drop: [ALL].",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "cap_drop is present but does not drop ALL.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "strict": "Medium"
+      }
+    },
+    {
+      "id": "CSB-CMP-024",
+      "title": "seccomp unconfined",
+      "target": "compose",
+      "category": "Capabilities",
+      "severity": "Critical",
+      "summary": "security_opt disables seccomp (seccomp=unconfined).",
+      "risk": "Disabling seccomp removes an important syscall filter.",
+      "remediation": "Remove seccomp=unconfined; use default or a tailored profile.",
+      "detailed_remediation": "Remove seccomp=unconfined; use default or a tailored profile.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "security_opt disables seccomp (seccomp=unconfined).",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "development": "High"
+      }
+    },
+    {
+      "id": "CSB-CMP-025",
+      "title": "AppArmor unconfined",
+      "target": "compose",
+      "category": "Capabilities",
+      "severity": "High",
+      "summary": "AppArmor is explicitly unconfined.",
+      "risk": "Disabling AppArmor reduces mandatory access controls where available.",
+      "remediation": "Remove apparmor:unconfined.",
+      "detailed_remediation": "Remove apparmor:unconfined.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "AppArmor is explicitly unconfined.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-026",
+      "title": "no-new-privileges missing",
+      "target": "compose",
+      "category": "Capabilities",
+      "severity": "Medium",
+      "summary": "no-new-privileges is not enabled.",
+      "risk": "Without no-new-privileges, setuid binaries may escalate privileges.",
+      "remediation": "Add security_opt: [no-new-privileges:true].",
+      "detailed_remediation": "Add security_opt: [no-new-privileges:true].",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "safe",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "no-new-privileges is not enabled.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-027",
+      "title": "unsafe proc/sys mounts or sysctls",
+      "target": "compose",
+      "category": "Capabilities",
+      "severity": "High",
+      "summary": "Writable proc/sys related mounts or unsafe sysctls detected.",
+      "risk": "Unsafe sysctls/mounts can affect host kernel behavior.",
+      "remediation": "Remove unsafe sysctls and writable /proc|/sys mounts.",
+      "detailed_remediation": "Remove unsafe sysctls and writable /proc|/sys mounts.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Writable proc/sys related mounts or unsafe sysctls detected.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-028",
+      "title": "unsafe sysctl values",
+      "target": "compose",
+      "category": "Capabilities",
+      "severity": "Medium",
+      "summary": "Sysctl values outside a conservative allowlist.",
+      "risk": "Non-default sysctls may weaken isolation; not all are insecure.",
+      "remediation": "Review sysctls against an allowlist; remove unnecessary entries.",
+      "detailed_remediation": "Review sysctls against an allowlist; remove unnecessary entries.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Sysctl values outside a conservative allowlist.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-030",
+      "title": "no explicit service user",
+      "target": "compose",
+      "category": "Identity",
+      "severity": "Medium",
+      "summary": "Service does not set user.",
+      "risk": "Containers often default to root inside the image user context.",
+      "remediation": "Set an explicit non-root user.",
+      "detailed_remediation": "Set an explicit non-root user.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Service does not set user.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "development": "Low"
+      }
+    },
+    {
+      "id": "CSB-CMP-031",
+      "title": "explicit root user",
+      "target": "compose",
+      "category": "Identity",
+      "severity": "High",
+      "summary": "Service explicitly runs as root (user root or UID 0).",
+      "risk": "Root inside the container increases impact of compromise.",
+      "remediation": "Run as a non-root UID/GID.",
+      "detailed_remediation": "Run as a non-root UID/GID.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Service explicitly runs as root (user root or UID 0).",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-032",
+      "title": "privileged supplementary groups",
+      "target": "compose",
+      "category": "Identity",
+      "severity": "Medium",
+      "summary": "group_add includes privileged/docker-like groups.",
+      "risk": "Supplementary privileged groups may grant host-equivalent access.",
+      "remediation": "Remove privileged groups from group_add.",
+      "detailed_remediation": "Remove privileged groups from group_add.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "group_add includes privileged/docker-like groups.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-033",
+      "title": "credential dirs writable for root container",
+      "target": "compose",
+      "category": "Identity",
+      "severity": "High",
+      "summary": "Writable home/credential mounts available to a root container.",
+      "risk": "Root plus writable credential mounts enables credential theft/modification.",
+      "remediation": "Use read-only mounts and non-root users.",
+      "detailed_remediation": "Use read-only mounts and non-root users.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Writable home/credential mounts available to a root container.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-040",
+      "title": "read_only not enabled",
+      "target": "compose",
+      "category": "Filesystem",
+      "severity": "Low",
+      "summary": "read_only root filesystem is not enabled.",
+      "risk": "Writable rootfs increases persistence options after compromise.",
+      "remediation": "Set read_only: true and use tmpfs/volumes for writable paths.",
+      "detailed_remediation": "Set read_only: true and use tmpfs/volumes for writable paths.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "safe",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "read_only root filesystem is not enabled.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "strict": "Medium"
+      }
+    },
+    {
+      "id": "CSB-CMP-041",
+      "title": "writable root filesystem undocumented",
+      "target": "compose",
+      "category": "Filesystem",
+      "severity": "Low",
+      "summary": "Writable root filesystem without documented need.",
+      "risk": "Writable rootfs may be unnecessary for many services.",
+      "remediation": "Enable read_only when application-compatible.",
+      "detailed_remediation": "Enable read_only when application-compatible.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Writable root filesystem without documented need.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-042",
+      "title": "tmpfs advisory with read_only",
+      "target": "compose",
+      "category": "Filesystem",
+      "severity": "Informational",
+      "summary": "read_only enabled; ensure tmpfs covers required writable paths.",
+      "risk": "Missing tmpfs may break apps or push writes to volumes unexpectedly.",
+      "remediation": "Add explicit tmpfs for known writable runtime paths; do not invent paths.",
+      "detailed_remediation": "Add explicit tmpfs for known writable runtime paths; do not invent paths.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "read_only enabled; ensure tmpfs covers required writable paths.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-043",
+      "title": "bind mount parent traversal",
+      "target": "compose",
+      "category": "Filesystem",
+      "severity": "High",
+      "summary": "Bind mount source uses parent directory traversal.",
+      "risk": "Traversal can escape intended project directories.",
+      "remediation": "Use paths within the project root only.",
+      "detailed_remediation": "Use paths within the project root only.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Bind mount source uses parent directory traversal.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-044",
+      "title": "absolute host bind path",
+      "target": "compose",
+      "category": "Filesystem",
+      "severity": "Informational",
+      "summary": "Absolute host bind path used.",
+      "risk": "Absolute binds couple config to host layout and may expose sensitive paths.",
+      "remediation": "Prefer named volumes or project-relative binds when possible.",
+      "detailed_remediation": "Prefer named volumes or project-relative binds when possible.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Absolute host bind path used.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-045",
+      "title": "bind source outside project root",
+      "target": "compose",
+      "category": "Filesystem",
+      "severity": "Medium",
+      "summary": "Bind source appears outside the project root.",
+      "risk": "Out-of-tree binds expand the trust boundary.",
+      "remediation": "Keep binds within the analyzed project root.",
+      "detailed_remediation": "Keep binds within the analyzed project root.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Bind source appears outside the project root.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-046",
+      "title": "ambiguous short volume syntax",
+      "target": "compose",
+      "category": "Filesystem",
+      "severity": "Low",
+      "summary": "Short volume syntax is ambiguous for analysis/patching.",
+      "risk": "Ambiguity increases review and remediation risk.",
+      "remediation": "Prefer long syntax with explicit type/source/target/read_only.",
+      "detailed_remediation": "Prefer long syntax with explicit type/source/target/read_only.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Short volume syntax is ambiguous for analysis/patching.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-047",
+      "title": "volume mode missing",
+      "target": "compose",
+      "category": "Filesystem",
+      "severity": "Informational",
+      "summary": "Volume mode/read_only not specified.",
+      "risk": "Default may be writable; not always wrong for data volumes.",
+      "remediation": "Set read_only explicitly when write access is unnecessary.",
+      "detailed_remediation": "Set read_only explicitly when write access is unnecessary.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Volume mode/read_only not specified.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-050",
+      "title": "secret-like environment literal",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "Critical",
+      "summary": "Likely secret embedded directly in environment.",
+      "risk": "Hard-coded secrets in Compose are frequently leaked via VCS and reports.",
+      "remediation": "Use Compose secrets or an external secret manager; remove literals.",
+      "detailed_remediation": "Use Compose secrets or an external secret manager; remove literals.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Likely secret embedded directly in environment.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-051",
+      "title": "high-entropy credential literal",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "High",
+      "summary": "Likely high-entropy credential literal detected.",
+      "risk": "High-entropy literals often indicate tokens or keys.",
+      "remediation": "Remove literals; inject secrets at runtime via a secret store.",
+      "detailed_remediation": "Remove literals; inject secrets at runtime via a secret store.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Likely high-entropy credential literal detected.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-052",
+      "title": "secret in command/entrypoint",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "High",
+      "summary": "Secret-like material appears in command or entrypoint.",
+      "risk": "Process arguments are widely visible in process listings.",
+      "remediation": "Pass secrets via files/env from a secret store, not argv.",
+      "detailed_remediation": "Pass secrets via files/env from a secret store, not argv.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Secret-like material appears in command or entrypoint.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-053",
+      "title": "secret in labels",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "High",
+      "summary": "Secret-like material appears in labels.",
+      "risk": "Labels are often exposed via inspect APIs and orchestration UIs.",
+      "remediation": "Do not store secrets in labels.",
+      "detailed_remediation": "Do not store secrets in labels.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Secret-like material appears in labels.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-054",
+      "title": "secret in build args",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "High",
+      "summary": "Secret-like build args detected.",
+      "risk": "Build args may persist in image history/cache metadata.",
+      "remediation": "Use BuildKit secret mounts instead of ARG for secrets.",
+      "detailed_remediation": "Use BuildKit secret mounts instead of ARG for secrets.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Secret-like build args detected.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-055",
+      "title": "env_file reference",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "Medium",
+      "summary": "env_file is referenced but not read by this analyzer.",
+      "risk": "File contents are outside verified scope and may contain secrets.",
+      "remediation": "Ensure env_file is not committed; prefer secrets. Content was not read.",
+      "detailed_remediation": "Ensure env_file is not committed; prefer secrets. Content was not read.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "env_file is referenced but not read by this analyzer.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-056",
+      "title": "secret-like path as volume",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "Medium",
+      "summary": "Secret-like host path mounted as a normal volume.",
+      "risk": "Ordinary volumes lack Compose secret semantics and may be overly writable.",
+      "remediation": "Use top-level secrets with explicit service grants.",
+      "detailed_remediation": "Use top-level secrets with explicit service grants.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Secret-like host path mounted as a normal volume.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-057",
+      "title": "top-level secret unused",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "Informational",
+      "summary": "Top-level secret declared but not granted to any service.",
+      "risk": "Unused secrets add complexity; may indicate misconfiguration.",
+      "remediation": "Grant to required services or remove unused secret declarations.",
+      "detailed_remediation": "Grant to required services or remove unused secret declarations.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Top-level secret declared but not granted to any service.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-058",
+      "title": "service secret policy expectation",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "Informational",
+      "summary": "Service secret grant differs from explicit policy expectations.",
+      "risk": "Only evaluated when policy declares expectations.",
+      "remediation": "Align service secrets with policy allowlists.",
+      "detailed_remediation": "Align service secrets with policy allowlists.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Service secret grant differs from explicit policy expectations.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-059",
+      "title": "unsafe secret source path",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "Medium",
+      "summary": "Secret source path is absolute, traversing, or outside project root.",
+      "risk": "Unsafe secret paths expand trust boundaries.",
+      "remediation": "Use project-relative secret files that are not tracked in VCS.",
+      "detailed_remediation": "Use project-relative secret files that are not tracked in VCS.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Secret source path is absolute, traversing, or outside project root.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-060",
+      "title": "insecure interpolation default",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "High",
+      "summary": "Interpolation default looks like an insecure secret placeholder/literal.",
+      "risk": "Insecure defaults may become effective credentials.",
+      "remediation": "Remove secret defaults; fail closed if unset.",
+      "detailed_remediation": "Remove secret defaults; fail closed if unset.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Interpolation default looks like an insecure secret placeholder/literal.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-070",
+      "title": "port published on all interfaces",
+      "target": "compose",
+      "category": "Networking",
+      "severity": "Medium",
+      "summary": "Port published on wildcard interfaces (0.0.0.0/::).",
+      "risk": "Wildcard binds may expose services beyond intended hosts.",
+      "remediation": "Bind to 127.0.0.1 or a specific interface when possible.",
+      "detailed_remediation": "Bind to 127.0.0.1 or a specific interface when possible.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Port published on wildcard interfaces (0.0.0.0/::).",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "strict": "High"
+      }
+    },
+    {
+      "id": "CSB-CMP-071",
+      "title": "sensitive port published",
+      "target": "compose",
+      "category": "Networking",
+      "severity": "High",
+      "summary": "Sensitive management/database port published.",
+      "risk": "Publishing admin/DB ports increases remote attack surface.",
+      "remediation": "Do not publish sensitive ports; use internal networks or localhost binds.",
+      "detailed_remediation": "Do not publish sensitive ports; use internal networks or localhost binds.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Sensitive management/database port published.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-072",
+      "title": "host network with ports/privileges",
+      "target": "compose",
+      "category": "Networking",
+      "severity": "High",
+      "summary": "Host networking combined with published ports or broad privileges.",
+      "risk": "Combined exposures compound isolation failure.",
+      "remediation": "Remove host networking and excess privileges.",
+      "detailed_remediation": "Remove host networking and excess privileges.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Host networking combined with published ports or broad privileges.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-073",
+      "title": "backend network not internal",
+      "target": "compose",
+      "category": "Networking",
+      "severity": "Informational",
+      "summary": "Backend network not marked internal (policy advisory).",
+      "risk": "Non-internal networks may route more broadly than intended.",
+      "remediation": "Mark backend networks as internal: true when appropriate.",
+      "detailed_remediation": "Mark backend networks as internal: true when appropriate.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Backend network not marked internal (policy advisory).",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-074",
+      "title": "service attached to all networks",
+      "target": "compose",
+      "category": "Networking",
+      "severity": "Informational",
+      "summary": "Service attached to every declared network against policy expectations.",
+      "risk": "Over-attachment widens lateral movement paths.",
+      "remediation": "Attach services only to required networks.",
+      "detailed_remediation": "Attach services only to required networks.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Service attached to every declared network against policy expectations.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-075",
+      "title": "extra_hosts host-gateway",
+      "target": "compose",
+      "category": "Networking",
+      "severity": "Informational",
+      "summary": "extra_hosts maps host-gateway.",
+      "risk": "Host gateway mappings can simplify host access from containers.",
+      "remediation": "Avoid unless required; document justification.",
+      "detailed_remediation": "Avoid unless required; document justification.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "extra_hosts maps host-gateway.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-076",
+      "title": "static public DNS",
+      "target": "compose",
+      "category": "Networking",
+      "severity": "Informational",
+      "summary": "Static public DNS configuration detected.",
+      "risk": "Not automatically insecure; may affect resolution trust.",
+      "remediation": "Prefer organizational DNS policy where applicable.",
+      "detailed_remediation": "Prefer organizational DNS policy where applicable.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Static public DNS configuration detected.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-077",
+      "title": "static mac/addressing",
+      "target": "compose",
+      "category": "Networking",
+      "severity": "Informational",
+      "summary": "Static MAC or addressing reduces portability/privacy.",
+      "risk": "Static identifiers can complicate operations and tracking posture.",
+      "remediation": "Prefer dynamic addressing unless required.",
+      "detailed_remediation": "Prefer dynamic addressing unless required.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Static MAC or addressing reduces portability/privacy.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-080",
+      "title": "no memory limit",
+      "target": "compose",
+      "category": "Resources",
+      "severity": "Low",
+      "summary": "No memory limit configured.",
+      "risk": "Unbounded memory can enable noisy-neighbor DoS on the host.",
+      "remediation": "Set mem_limit or deploy.resources.limits.memory.",
+      "detailed_remediation": "Set mem_limit or deploy.resources.limits.memory.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "No memory limit configured.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "strict": "Medium",
+        "development": "Informational"
+      }
+    },
+    {
+      "id": "CSB-CMP-081",
+      "title": "no CPU limit",
+      "target": "compose",
+      "category": "Resources",
+      "severity": "Low",
+      "summary": "No CPU limit configured.",
+      "risk": "Unbounded CPU can starve co-located workloads.",
+      "remediation": "Set cpus or deploy CPU limits.",
+      "detailed_remediation": "Set cpus or deploy CPU limits.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "No CPU limit configured.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "strict": "Medium",
+        "development": "Informational"
+      }
+    },
+    {
+      "id": "CSB-CMP-082",
+      "title": "no PID limit",
+      "target": "compose",
+      "category": "Resources",
+      "severity": "Low",
+      "summary": "No PID limit configured.",
+      "risk": "Fork bombs can exhaust host process table.",
+      "remediation": "Set pids_limit or deploy pids limits.",
+      "detailed_remediation": "Set pids_limit or deploy pids limits.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "No PID limit configured.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "strict": "Medium",
+        "development": "Informational"
+      }
+    },
+    {
+      "id": "CSB-CMP-083",
+      "title": "PID limit disabled/unlimited",
+      "target": "compose",
+      "category": "Resources",
+      "severity": "Medium",
+      "summary": "PID limit explicitly disabled or unlimited.",
+      "risk": "Unlimited PIDs remove a key DoS control.",
+      "remediation": "Set a finite pids_limit.",
+      "detailed_remediation": "Set a finite pids_limit.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "PID limit explicitly disabled or unlimited.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-084",
+      "title": "inconsistent resource limits",
+      "target": "compose",
+      "category": "Resources",
+      "severity": "Low",
+      "summary": "Service-level and deploy-level resource limits appear inconsistent.",
+      "risk": "Inconsistency causes operator confusion about effective limits.",
+      "remediation": "Define limits in one place consistently.",
+      "detailed_remediation": "Define limits in one place consistently.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Service-level and deploy-level resource limits appear inconsistent.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-085",
+      "title": "no healthcheck",
+      "target": "compose",
+      "category": "Reliability",
+      "severity": "Medium",
+      "summary": "No healthcheck defined for a long-running service.",
+      "risk": "Without healthchecks, unhealthy instances may keep receiving traffic.",
+      "remediation": "Add a HEALTHCHECK-compatible Compose healthcheck.",
+      "detailed_remediation": "Add a HEALTHCHECK-compatible Compose healthcheck.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "No healthcheck defined for a long-running service.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "development": "Informational"
+      }
+    },
+    {
+      "id": "CSB-CMP-086",
+      "title": "healthcheck disabled",
+      "target": "compose",
+      "category": "Reliability",
+      "severity": "Medium",
+      "summary": "Healthcheck explicitly disabled.",
+      "risk": "Disabled healthchecks reduce failure detection.",
+      "remediation": "Enable a meaningful healthcheck when applicable.",
+      "detailed_remediation": "Enable a meaningful healthcheck when applicable.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Healthcheck explicitly disabled.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-087",
+      "title": "healthcheck secret exposure",
+      "target": "compose",
+      "category": "Secrets",
+      "severity": "High",
+      "summary": "Healthcheck command appears to include secret-like material.",
+      "risk": "Healthcheck commands may appear in inspect output.",
+      "remediation": "Do not embed secrets in healthcheck commands.",
+      "detailed_remediation": "Do not embed secrets in healthcheck commands.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Healthcheck command appears to include secret-like material.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-088",
+      "title": "depends_on service_started vs healthy",
+      "target": "compose",
+      "category": "Reliability",
+      "severity": "Informational",
+      "summary": "Dependency uses service_started while dependency defines healthcheck.",
+      "risk": "service_healthy may be operationally safer.",
+      "remediation": "Consider condition: service_healthy when appropriate.",
+      "detailed_remediation": "Consider condition: service_healthy when appropriate.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Dependency uses service_started while dependency defines healthcheck.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-089",
+      "title": "restart policy absent",
+      "target": "compose",
+      "category": "Reliability",
+      "severity": "Informational",
+      "summary": "Restart policy absent.",
+      "risk": "Missing restart policy may affect availability expectations.",
+      "remediation": "Set an explicit restart policy appropriate to the workload.",
+      "detailed_remediation": "Set an explicit restart policy appropriate to the workload.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Restart policy absent.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "baseline": "Low"
+      }
+    },
+    {
+      "id": "CSB-CMP-090",
+      "title": "unbounded restart behavior",
+      "target": "compose",
+      "category": "Reliability",
+      "severity": "Low",
+      "summary": "Restart policy may restart without useful bounds.",
+      "risk": "Tight restart loops can amplify failure modes.",
+      "remediation": "Use on-failure with max retries where appropriate.",
+      "detailed_remediation": "Use on-failure with max retries where appropriate.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Restart policy may restart without useful bounds.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-091",
+      "title": "stop_grace_period advisory",
+      "target": "compose",
+      "category": "Reliability",
+      "severity": "Informational",
+      "summary": "No stop_grace_period for policy-identified stateful services.",
+      "risk": "Abrupt stops may risk data integrity for stateful workloads.",
+      "remediation": "Set stop_grace_period when policy marks the service stateful.",
+      "detailed_remediation": "Set stop_grace_period when policy marks the service stateful.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "No stop_grace_period for policy-identified stateful services.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-100",
+      "title": "logging driver/options absent",
+      "target": "compose",
+      "category": "Logging",
+      "severity": "Informational",
+      "summary": "Logging driver or options absent.",
+      "risk": "Defaults may be unbounded on some engines.",
+      "remediation": "Configure logging with size/file rotation.",
+      "detailed_remediation": "Configure logging with size/file rotation.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Logging driver or options absent.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-101",
+      "title": "json-file without max-size",
+      "target": "compose",
+      "category": "Logging",
+      "severity": "Low",
+      "summary": "json-file logging without max-size.",
+      "risk": "Unbounded logs can fill disks.",
+      "remediation": "Set max-size for json-file driver.",
+      "detailed_remediation": "Set max-size for json-file driver.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "json-file logging without max-size.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-102",
+      "title": "json-file without max-file",
+      "target": "compose",
+      "category": "Logging",
+      "severity": "Low",
+      "summary": "json-file logging without max-file.",
+      "risk": "Unbounded log file counts can fill disks.",
+      "remediation": "Set max-file for json-file driver.",
+      "detailed_remediation": "Set max-file for json-file driver.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "json-file logging without max-file.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-103",
+      "title": "logging disabled",
+      "target": "compose",
+      "category": "Logging",
+      "severity": "Informational",
+      "summary": "Logging appears disabled.",
+      "risk": "May be intentional; reduces forensic visibility.",
+      "remediation": "Ensure alternate audit/logging exists if disabled.",
+      "detailed_remediation": "Ensure alternate audit/logging exists if disabled.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Logging appears disabled.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-104",
+      "title": "remote logging target",
+      "target": "compose",
+      "category": "Logging",
+      "severity": "Informational",
+      "summary": "Logging target appears remote/external.",
+      "risk": "Remote logging has privacy and trust implications; no network call was made.",
+      "remediation": "Review destination trust and data minimization.",
+      "detailed_remediation": "Review destination trust and data minimization.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Logging target appears remote/external.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-110",
+      "title": "image uses latest tag",
+      "target": "compose",
+      "category": "Image provenance",
+      "severity": "Medium",
+      "summary": "Image reference uses the latest tag.",
+      "risk": "latest is moving and reduces reproducibility.",
+      "remediation": "Pin to a specific version tag or digest.",
+      "detailed_remediation": "Pin to a specific version tag or digest.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Image reference uses the latest tag.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-111",
+      "title": "image has no explicit tag",
+      "target": "compose",
+      "category": "Image provenance",
+      "severity": "Medium",
+      "summary": "Image reference has no explicit tag (implicit latest).",
+      "risk": "Implicit latest is non-deterministic.",
+      "remediation": "Specify an explicit tag or digest.",
+      "detailed_remediation": "Specify an explicit tag or digest.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Image reference has no explicit tag (implicit latest).",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-112",
+      "title": "image not digest-pinned",
+      "target": "compose",
+      "category": "Image provenance",
+      "severity": "Low",
+      "summary": "Image is not pinned by digest.",
+      "risk": "Tags can move; digests improve reproducibility but still require updates.",
+      "remediation": "Pin by digest when policy requires.",
+      "detailed_remediation": "Pin by digest when policy requires.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Image is not pinned by digest.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "strict": "Medium",
+        "development": "Informational"
+      }
+    },
+    {
+      "id": "CSB-CMP-113",
+      "title": "HTTP registry reference",
+      "target": "compose",
+      "category": "Image provenance",
+      "severity": "High",
+      "summary": "Image reference uses unencrypted HTTP registry URL.",
+      "risk": "HTTP registries are susceptible to tampering in transit.",
+      "remediation": "Use HTTPS registries only.",
+      "detailed_remediation": "Use HTTPS registries only.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Image reference uses unencrypted HTTP registry URL.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-114",
+      "title": "credentials in image reference",
+      "target": "compose",
+      "category": "Image provenance",
+      "severity": "Critical",
+      "summary": "Image reference contains embedded credentials.",
+      "risk": "Credentials in image refs are easily leaked.",
+      "remediation": "Remove embedded credentials; authenticate via secure credential helpers.",
+      "detailed_remediation": "Remove embedded credentials; authenticate via secure credential helpers.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Image reference contains embedded credentials.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-115",
+      "title": "interpolation-only image reference",
+      "target": "compose",
+      "category": "Image provenance",
+      "severity": "Informational",
+      "summary": "Image reference is interpolation-only and cannot be evaluated.",
+      "risk": "Static analysis cannot assess tag/digest posture.",
+      "remediation": "Ensure resolved values are pinned in the deployment pipeline.",
+      "detailed_remediation": "Ensure resolved values are pinned in the deployment pipeline.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Image reference is interpolation-only and cannot be evaluated.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-120",
+      "title": "broad build context",
+      "target": "compose",
+      "category": "Build security",
+      "severity": "Low",
+      "summary": "Build context is broad (e.g. . or repository root).",
+      "risk": "Broad contexts increase risk of leaking sensitive files into build.",
+      "remediation": "Narrow context and maintain a strong .dockerignore.",
+      "detailed_remediation": "Narrow context and maintain a strong .dockerignore.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Build context is broad (e.g. . or repository root).",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-121",
+      "title": "build context parent traversal",
+      "target": "compose",
+      "category": "Build security",
+      "severity": "High",
+      "summary": "Build context uses parent traversal.",
+      "risk": "Parent contexts can include unintended sensitive files.",
+      "remediation": "Keep build context within the project.",
+      "detailed_remediation": "Keep build context within the project.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Build context uses parent traversal.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-122",
+      "title": "absolute build context",
+      "target": "compose",
+      "category": "Build security",
+      "severity": "Medium",
+      "summary": "Build context is an absolute path.",
+      "risk": "Absolute contexts reduce portability and may escape intended trees.",
+      "remediation": "Use relative contexts under the project root.",
+      "detailed_remediation": "Use relative contexts under the project root.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Build context is an absolute path.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-123",
+      "title": "dockerfile path escapes context",
+      "target": "compose",
+      "category": "Build security",
+      "severity": "High",
+      "summary": "Dockerfile path appears to escape the build context.",
+      "risk": "Escaping context can pull unexpected Dockerfiles.",
+      "remediation": "Keep Dockerfile paths within the build context.",
+      "detailed_remediation": "Keep Dockerfile paths within the build context.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Dockerfile path appears to escape the build context.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-124",
+      "title": "secret-like build args",
+      "target": "compose",
+      "category": "Build security",
+      "severity": "High",
+      "summary": "Build args contain secret-like names or literals.",
+      "risk": "Secrets in build args may persist in history/cache.",
+      "remediation": "Use BuildKit secrets; never pass secret literals via args.",
+      "detailed_remediation": "Use BuildKit secrets; never pass secret literals via args.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Build args contain secret-like names or literals.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-125",
+      "title": "privileged/insecure build entitlement",
+      "target": "compose",
+      "category": "Build security",
+      "severity": "High",
+      "summary": "Build privileged or insecure entitlement represented.",
+      "risk": "Privileged builds expand host attack surface during build.",
+      "remediation": "Avoid privileged builds.",
+      "detailed_remediation": "Avoid privileged builds.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Build privileged or insecure entitlement represented.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-126",
+      "title": "build SSH forwarding",
+      "target": "compose",
+      "category": "Build security",
+      "severity": "Informational",
+      "summary": "Build SSH forwarding configured.",
+      "risk": "SSH forwarding can expose agent keys to build steps.",
+      "remediation": "Prefer short-lived tokens or BuildKit secrets.",
+      "detailed_remediation": "Prefer short-lived tokens or BuildKit secrets.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Build SSH forwarding configured.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-127",
+      "title": "build secrets absent with secret-like args",
+      "target": "compose",
+      "category": "Build security",
+      "severity": "Medium",
+      "summary": "Secret-like build args present without build secrets.",
+      "risk": "Indicates secrets may be handled via ARG instead of secret mounts.",
+      "remediation": "Migrate to BuildKit secret mounts.",
+      "detailed_remediation": "Migrate to BuildKit secret mounts.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Secret-like build args present without build secrets.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-130",
+      "title": "include used",
+      "target": "compose",
+      "category": "Configuration trust",
+      "severity": "Medium",
+      "summary": "Compose include is used and was not followed.",
+      "risk": "Included files expand the trust boundary beyond analyzed content.",
+      "remediation": "Review included files separately; supply them explicitly if they must be analyzed.",
+      "detailed_remediation": "Review included files separately; supply them explicitly if they must be analyzed.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Compose include is used and was not followed.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-131",
+      "title": "extends.file used",
+      "target": "compose",
+      "category": "Configuration trust",
+      "severity": "Medium",
+      "summary": "extends.file is used and was not read.",
+      "risk": "Extended files may introduce privileges/secrets outside this scan.",
+      "remediation": "Inline configuration or supply extended files explicitly for analysis.",
+      "detailed_remediation": "Inline configuration or supply extended files explicitly for analysis.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "extends.file is used and was not read.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-132",
+      "title": "env_file outside project root",
+      "target": "compose",
+      "category": "Configuration trust",
+      "severity": "Medium",
+      "summary": "env_file path is absolute or outside project root.",
+      "risk": "Out-of-tree env files expand trust boundaries.",
+      "remediation": "Keep env_file paths project-relative and untracked.",
+      "detailed_remediation": "Keep env_file paths project-relative and untracked.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "env_file path is absolute or outside project root.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-133",
+      "title": "configs.file outside project root",
+      "target": "compose",
+      "category": "Configuration trust",
+      "severity": "Medium",
+      "summary": "configs.file path is absolute or outside project root.",
+      "risk": "Out-of-tree configs expand trust boundaries.",
+      "remediation": "Use project-relative config files.",
+      "detailed_remediation": "Use project-relative config files.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "configs.file path is absolute or outside project root.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-134",
+      "title": "secrets.file outside project root",
+      "target": "compose",
+      "category": "Configuration trust",
+      "severity": "Medium",
+      "summary": "secrets.file path is absolute or outside project root.",
+      "risk": "Out-of-tree secrets expand trust boundaries.",
+      "remediation": "Use project-relative secret files that are not committed.",
+      "detailed_remediation": "Use project-relative secret files that are not committed.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "secrets.file path is absolute or outside project root.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-135",
+      "title": "label_file used",
+      "target": "compose",
+      "category": "Configuration trust",
+      "severity": "Informational",
+      "summary": "label_file is used and was not read.",
+      "risk": "Label files may contain sensitive metadata.",
+      "remediation": "Avoid secrets in label files; review separately.",
+      "detailed_remediation": "Avoid secrets in label files; review separately.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "label_file is used and was not read.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-136",
+      "title": "credential_spec.file used",
+      "target": "compose",
+      "category": "Configuration trust",
+      "severity": "Medium",
+      "summary": "credential_spec.file is used and was not read.",
+      "risk": "Credential specs can grant significant identity privileges.",
+      "remediation": "Review credential specs out of band.",
+      "detailed_remediation": "Review credential specs out of band.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "credential_spec.file is used and was not read.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-137",
+      "title": "security-related extension fields",
+      "target": "compose",
+      "category": "Configuration trust",
+      "severity": "Informational",
+      "summary": "Security-related unknown extension fields detected.",
+      "risk": "Custom extensions may alter security posture outside standard fields.",
+      "remediation": "Document and review security-affecting x-* fields.",
+      "detailed_remediation": "Document and review security-affecting x-* fields.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Security-related unknown extension fields detected.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-138",
+      "title": "YAML anchors or merge keys",
+      "target": "compose",
+      "category": "Configuration trust",
+      "severity": "Informational",
+      "summary": "YAML anchors or merge keys are present.",
+      "risk": "Anchors complicate review and safe patch generation.",
+      "remediation": "Prefer explicit duplication for security-sensitive fields when practical.",
+      "detailed_remediation": "Prefer explicit duplication for security-sensitive fields when practical.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "YAML anchors or merge keys are present.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-CMP-139",
+      "title": "sensitive value via anchors",
+      "target": "compose",
+      "category": "Configuration trust",
+      "severity": "High",
+      "summary": "Potentially sensitive value propagated through anchors.",
+      "risk": "Anchored secrets can multiply exposure across services.",
+      "remediation": "Remove secret literals; use secret stores.",
+      "detailed_remediation": "Remove secret literals; use secret stores.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Potentially sensitive value propagated through anchors.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-001",
+      "title": "FROM uses latest",
+      "target": "dockerfile",
+      "category": "Image provenance",
+      "severity": "Medium",
+      "summary": "FROM uses latest tag.",
+      "risk": "Moving tags reduce reproducibility.",
+      "remediation": "Pin FROM to a version tag or digest.",
+      "detailed_remediation": "Pin FROM to a version tag or digest.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "FROM uses latest tag.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-002",
+      "title": "FROM has no tag",
+      "target": "dockerfile",
+      "category": "Image provenance",
+      "severity": "Medium",
+      "summary": "FROM has no explicit tag.",
+      "risk": "Implicit latest is non-deterministic.",
+      "remediation": "Specify an explicit tag or digest.",
+      "detailed_remediation": "Specify an explicit tag or digest.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "FROM has no explicit tag.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-003",
+      "title": "FROM not digest-pinned",
+      "target": "dockerfile",
+      "category": "Image provenance",
+      "severity": "Low",
+      "summary": "FROM is not digest-pinned.",
+      "risk": "Tags can move.",
+      "remediation": "Pin by digest when policy requires.",
+      "detailed_remediation": "Pin by digest when policy requires.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "FROM is not digest-pinned.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "strict": "Medium",
+        "development": "Informational"
+      }
+    },
+    {
+      "id": "CSB-DF-004",
+      "title": "FROM scratch",
+      "target": "dockerfile",
+      "category": "Image provenance",
+      "severity": "Informational",
+      "summary": "FROM scratch used.",
+      "risk": "Often desirable for minimal images; not a failure.",
+      "remediation": "No action required solely for scratch.",
+      "detailed_remediation": "No action required solely for scratch.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "FROM scratch used.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-005",
+      "title": "ARG used in FROM unresolved",
+      "target": "dockerfile",
+      "category": "Image provenance",
+      "severity": "Informational",
+      "summary": "FROM uses ARG that cannot be statically resolved.",
+      "risk": "Base image posture cannot be fully evaluated.",
+      "remediation": "Ensure CI pins resolved base images.",
+      "detailed_remediation": "Ensure CI pins resolved base images.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "FROM uses ARG that cannot be statically resolved.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-006",
+      "title": "suspicious registry reference",
+      "target": "dockerfile",
+      "category": "Image provenance",
+      "severity": "Medium",
+      "summary": "Remote/suspicious registry reference detected syntactically.",
+      "risk": "No reputation lookup is performed.",
+      "remediation": "Use trusted registries and pin digests.",
+      "detailed_remediation": "Use trusted registries and pin digests.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Remote/suspicious registry reference detected syntactically.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-010",
+      "title": "no final USER",
+      "target": "dockerfile",
+      "category": "Identity",
+      "severity": "Medium",
+      "summary": "Final stage has no USER instruction.",
+      "risk": "Image may run as root by default.",
+      "remediation": "Add a non-root USER in the final stage.",
+      "detailed_remediation": "Add a non-root USER in the final stage.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Final stage has no USER instruction.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "development": "Low"
+      }
+    },
+    {
+      "id": "CSB-DF-011",
+      "title": "final USER is root",
+      "target": "dockerfile",
+      "category": "Identity",
+      "severity": "High",
+      "summary": "Final USER is root or UID 0.",
+      "risk": "Root runtime increases compromise impact.",
+      "remediation": "Switch to a non-root user before ENTRYPOINT/CMD.",
+      "detailed_remediation": "Switch to a non-root user before ENTRYPOINT/CMD.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Final USER is root or UID 0.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-012",
+      "title": "USER switched back to root",
+      "target": "dockerfile",
+      "category": "Identity",
+      "severity": "High",
+      "summary": "USER changes back to root in the final stage.",
+      "risk": "Reintroducing root late in the stage increases risk.",
+      "remediation": "Keep final runtime user non-root.",
+      "detailed_remediation": "Keep final runtime user non-root.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "USER changes back to root in the final stage.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-013",
+      "title": "numeric non-root USER",
+      "target": "dockerfile",
+      "category": "Identity",
+      "severity": "Informational",
+      "summary": "Numeric non-root USER without ownership documentation.",
+      "risk": "Not necessarily insecure; ownership must match copied files.",
+      "remediation": "Ensure filesystem ownership matches the numeric UID.",
+      "detailed_remediation": "Ensure filesystem ownership matches the numeric UID.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Numeric non-root USER without ownership documentation.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-020",
+      "title": "secret-like ENV",
+      "target": "dockerfile",
+      "category": "Secrets",
+      "severity": "Critical",
+      "summary": "ENV contains secret-like key.",
+      "risk": "ENV values persist in image config.",
+      "remediation": "Do not put secrets in ENV; inject at runtime.",
+      "detailed_remediation": "Do not put secrets in ENV; inject at runtime.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "ENV contains secret-like key.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-021",
+      "title": "secret-like ARG",
+      "target": "dockerfile",
+      "category": "Secrets",
+      "severity": "High",
+      "summary": "ARG contains secret-like key.",
+      "risk": "ARG may persist in history/cache metadata.",
+      "remediation": "Use BuildKit secret mounts.",
+      "detailed_remediation": "Use BuildKit secret mounts.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "ARG contains secret-like key.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-022",
+      "title": "secret literal in instructions",
+      "target": "dockerfile",
+      "category": "Secrets",
+      "severity": "Critical",
+      "summary": "Likely secret literal in ENV/ARG/RUN/CMD/ENTRYPOINT.",
+      "risk": "Secrets in layers/config are difficult to eradicate.",
+      "remediation": "Remove literals; rotate any exposed credentials.",
+      "detailed_remediation": "Remove literals; rotate any exposed credentials.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Likely secret literal in ENV/ARG/RUN/CMD/ENTRYPOINT.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-023",
+      "title": "COPY/ADD sensitive credential files",
+      "target": "dockerfile",
+      "category": "Secrets",
+      "severity": "Critical",
+      "summary": "COPY/ADD appears to include private keys or credential files.",
+      "risk": "Credential files in images are frequently exfiltrated.",
+      "remediation": "Do not copy secrets into images.",
+      "detailed_remediation": "Do not copy secrets into images.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "COPY/ADD appears to include private keys or credential files.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-024",
+      "title": "secret via ARG instead of BuildKit",
+      "target": "dockerfile",
+      "category": "Secrets",
+      "severity": "High",
+      "summary": "Build secret passed through ARG instead of BuildKit secret mount.",
+      "risk": "ARG secrets leak via history.",
+      "remediation": "Use RUN --mount=type=secret.",
+      "detailed_remediation": "Use RUN --mount=type=secret.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Build secret passed through ARG instead of BuildKit secret mount.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-025",
+      "title": "secret removed in later layer",
+      "target": "dockerfile",
+      "category": "Secrets",
+      "severity": "High",
+      "summary": "Secret-like value introduced then removed in a later layer.",
+      "risk": "Layer history may still preserve secret material.",
+      "remediation": "Never introduce secrets into layers; use multi-stage and secret mounts.",
+      "detailed_remediation": "Never introduce secrets into layers; use multi-stage and secret mounts.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Secret-like value introduced then removed in a later layer.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-030",
+      "title": "remote ADD URL",
+      "target": "dockerfile",
+      "category": "Supply chain",
+      "severity": "High",
+      "summary": "ADD fetches a remote URL.",
+      "risk": "Remote ADD expands supply-chain trust to an HTTP(S) resource.",
+      "remediation": "Prefer COPY of verified local artifacts.",
+      "detailed_remediation": "Prefer COPY of verified local artifacts.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "ADD fetches a remote URL.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-031",
+      "title": "ADD where COPY clearer",
+      "target": "dockerfile",
+      "category": "Supply chain",
+      "severity": "Low",
+      "summary": "ADD used where COPY would be clearer.",
+      "risk": "ADD has extra magic (URLs/archives) that can surprise operators.",
+      "remediation": "Use COPY unless archive auto-extract is required.",
+      "detailed_remediation": "Use COPY unless archive auto-extract is required.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "ADD used where COPY would be clearer.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-032",
+      "title": "curl/wget piped to shell",
+      "target": "dockerfile",
+      "category": "Supply chain",
+      "severity": "High",
+      "summary": "curl or wget piped directly to a shell.",
+      "risk": "Pipe-to-shell installs are a common supply-chain hazard.",
+      "remediation": "Download, verify checksum/signature, then install.",
+      "detailed_remediation": "Download, verify checksum/signature, then install.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "curl or wget piped directly to a shell.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-033",
+      "title": "download without checksum",
+      "target": "dockerfile",
+      "category": "Supply chain",
+      "severity": "Medium",
+      "summary": "Downloaded artifact lacks visible checksum verification nearby.",
+      "risk": "Unverified downloads may be tampered with.",
+      "remediation": "Verify checksums/signatures in the same layer.",
+      "detailed_remediation": "Verify checksums/signatures in the same layer.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Downloaded artifact lacks visible checksum verification nearby.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-034",
+      "title": "package verification disabled",
+      "target": "dockerfile",
+      "category": "Supply chain",
+      "severity": "High",
+      "summary": "Package repository key/certificate verification disabled.",
+      "risk": "Disabled verification enables package tampering.",
+      "remediation": "Do not disable repo verification.",
+      "detailed_remediation": "Do not disable repo verification.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Package repository key/certificate verification disabled.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-035",
+      "title": "TLS verification disabled",
+      "target": "dockerfile",
+      "category": "Supply chain",
+      "severity": "High",
+      "summary": "TLS verification explicitly disabled.",
+      "risk": "Disabling TLS verification enables MITM.",
+      "remediation": "Keep TLS verification enabled.",
+      "detailed_remediation": "Keep TLS verification enabled.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "TLS verification explicitly disabled.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-036",
+      "title": "git clone unpinned",
+      "target": "dockerfile",
+      "category": "Supply chain",
+      "severity": "Medium",
+      "summary": "git clone without pinned commit/tag.",
+      "risk": "Unpinned clones are non-reproducible.",
+      "remediation": "Clone a pinned commit SHA.",
+      "detailed_remediation": "Clone a pinned commit SHA.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "git clone without pinned commit/tag.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-040",
+      "title": "apt-get update separated",
+      "target": "dockerfile",
+      "category": "Package management",
+      "severity": "Low",
+      "summary": "apt-get update separated from install.",
+      "risk": "Separated update can cause stale index issues and larger layers.",
+      "remediation": "Combine update and install in one RUN.",
+      "detailed_remediation": "Combine update and install in one RUN.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "apt-get update separated from install.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-041",
+      "title": "apt missing no-install-recommends",
+      "target": "dockerfile",
+      "category": "Package management",
+      "severity": "Low",
+      "summary": "apt-get install lacks --no-install-recommends.",
+      "risk": "Recommends inflate image size and attack surface.",
+      "remediation": "Add --no-install-recommends.",
+      "detailed_remediation": "Add --no-install-recommends.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "apt-get install lacks --no-install-recommends.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-042",
+      "title": "package cache not cleaned",
+      "target": "dockerfile",
+      "category": "Package management",
+      "severity": "Low",
+      "summary": "Package manager cache not removed in the same layer.",
+      "risk": "Leftover caches increase image size.",
+      "remediation": "Clean caches in the same RUN.",
+      "detailed_remediation": "Clean caches in the same RUN.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Package manager cache not removed in the same layer.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-043",
+      "title": "unbounded system upgrade",
+      "target": "dockerfile",
+      "category": "Package management",
+      "severity": "Medium",
+      "summary": "Unbounded system upgrade detected.",
+      "risk": "Unpinned upgrades reduce reproducibility.",
+      "remediation": "Install pinned packages instead of broad upgrades.",
+      "detailed_remediation": "Install pinned packages instead of broad upgrades.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Unbounded system upgrade detected.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-044",
+      "title": "packages without version pins",
+      "target": "dockerfile",
+      "category": "Package management",
+      "severity": "Informational",
+      "summary": "Packages installed without version constraints.",
+      "risk": "Unpinned packages drift over time.",
+      "remediation": "Pin versions when policy requires.",
+      "detailed_remediation": "Pin versions when policy requires.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Packages installed without version constraints.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-045",
+      "title": "apk missing --no-cache",
+      "target": "dockerfile",
+      "category": "Package management",
+      "severity": "Low",
+      "summary": "apk add lacks --no-cache.",
+      "risk": "Cache may persist unless cleaned.",
+      "remediation": "Use apk add --no-cache.",
+      "detailed_remediation": "Use apk add --no-cache.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "apk add lacks --no-cache.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-046",
+      "title": "debug tools in final stage",
+      "target": "dockerfile",
+      "category": "Package management",
+      "severity": "Medium",
+      "summary": "Debugging/admin tools installed in final stage.",
+      "risk": "Extra tools enlarge attack surface.",
+      "remediation": "Keep debug tools in builder stages only.",
+      "detailed_remediation": "Keep debug tools in builder stages only.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Debugging/admin tools installed in final stage.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-050",
+      "title": "chmod 777",
+      "target": "dockerfile",
+      "category": "Filesystem",
+      "severity": "High",
+      "summary": "chmod 777 or equivalent broad writable permission.",
+      "risk": "World-writable permissions enable easy tampering.",
+      "remediation": "Use least privilege modes (e.g. 750/640).",
+      "detailed_remediation": "Use least privilege modes (e.g. 750/640).",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "chmod 777 or equivalent broad writable permission.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-051",
+      "title": "recursive chmod/chown broad paths",
+      "target": "dockerfile",
+      "category": "Filesystem",
+      "severity": "Medium",
+      "summary": "Recursive chmod/chown on broad filesystem paths.",
+      "risk": "Broad recursive ownership changes are error-prone and risky.",
+      "remediation": "Limit recursion to application directories.",
+      "detailed_remediation": "Limit recursion to application directories.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Recursive chmod/chown on broad filesystem paths.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-052",
+      "title": "COPY --chown absent",
+      "target": "dockerfile",
+      "category": "Filesystem",
+      "severity": "Informational",
+      "summary": "COPY --chown absent while non-root runtime may need ownership.",
+      "risk": "Ownership mismatches can force root or break the app.",
+      "remediation": "Use COPY --chown when appropriate.",
+      "detailed_remediation": "Use COPY --chown when appropriate.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "COPY --chown absent while non-root runtime may need ownership.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-053",
+      "title": "WORKDIR absent",
+      "target": "dockerfile",
+      "category": "Filesystem",
+      "severity": "Informational",
+      "summary": "WORKDIR is absent.",
+      "risk": "Default WORKDIR may be /.",
+      "remediation": "Set an explicit application WORKDIR.",
+      "detailed_remediation": "Set an explicit application WORKDIR.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "WORKDIR is absent.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-054",
+      "title": "WORKDIR sensitive path",
+      "target": "dockerfile",
+      "category": "Filesystem",
+      "severity": "Medium",
+      "summary": "WORKDIR is root or a sensitive absolute directory.",
+      "risk": "Sensitive workdirs increase accidental write risk.",
+      "remediation": "Use an application-specific directory.",
+      "detailed_remediation": "Use an application-specific directory.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "WORKDIR is root or a sensitive absolute directory.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-055",
+      "title": "VOLUME sensitive path",
+      "target": "dockerfile",
+      "category": "Filesystem",
+      "severity": "Informational",
+      "summary": "VOLUME declares a sensitive host-like path.",
+      "risk": "VOLUME is not a host bind; still review path choices.",
+      "remediation": "Use application data paths for VOLUME.",
+      "detailed_remediation": "Use application data paths for VOLUME.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "VOLUME declares a sensitive host-like path.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-056",
+      "title": "build artifacts in final stage",
+      "target": "dockerfile",
+      "category": "Filesystem",
+      "severity": "Informational",
+      "summary": "Temporary build artifacts may remain in final stage.",
+      "risk": "Leftover toolchains increase size and surface.",
+      "remediation": "Use multi-stage builds and copy only runtime artifacts.",
+      "detailed_remediation": "Use multi-stage builds and copy only runtime artifacts.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Temporary build artifacts may remain in final stage.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-060",
+      "title": "shell-form ENTRYPOINT",
+      "target": "dockerfile",
+      "category": "Process model",
+      "severity": "Low",
+      "summary": "Shell-form ENTRYPOINT used.",
+      "risk": "Shell form involves a shell and signal handling quirks.",
+      "remediation": "Prefer exec-form ENTRYPOINT JSON arrays.",
+      "detailed_remediation": "Prefer exec-form ENTRYPOINT JSON arrays.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Shell-form ENTRYPOINT used.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-061",
+      "title": "shell-form CMD",
+      "target": "dockerfile",
+      "category": "Process model",
+      "severity": "Low",
+      "summary": "Shell-form CMD used.",
+      "risk": "Shell form involves a shell and signal handling quirks.",
+      "remediation": "Prefer exec-form CMD JSON arrays.",
+      "detailed_remediation": "Prefer exec-form CMD JSON arrays.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Shell-form CMD used.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-062",
+      "title": "SSH/systemd/supervisor process",
+      "target": "dockerfile",
+      "category": "Process model",
+      "severity": "Medium",
+      "summary": "ENTRYPOINT/CMD appears to start SSH, systemd, or supervisor.",
+      "risk": "Extra supervisors expand attack surface; context-dependent.",
+      "remediation": "Run a single app process when practical.",
+      "detailed_remediation": "Run a single app process when practical.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "ENTRYPOINT/CMD appears to start SSH, systemd, or supervisor.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-063",
+      "title": "no ENTRYPOINT or CMD",
+      "target": "dockerfile",
+      "category": "Process model",
+      "severity": "Informational",
+      "summary": "No ENTRYPOINT or CMD defined.",
+      "risk": "Image may rely on runtime command overrides.",
+      "remediation": "Define a clear default command when appropriate.",
+      "detailed_remediation": "Define a clear default command when appropriate.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "No ENTRYPOINT or CMD defined.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-064",
+      "title": "HEALTHCHECK missing",
+      "target": "dockerfile",
+      "category": "Process model",
+      "severity": "Low",
+      "summary": "HEALTHCHECK missing.",
+      "risk": "Missing healthchecks reduce orchestrator visibility.",
+      "remediation": "Add HEALTHCHECK when policy requires.",
+      "detailed_remediation": "Add HEALTHCHECK when policy requires.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "HEALTHCHECK missing.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {
+        "strict": "Medium",
+        "development": "Informational"
+      }
+    },
+    {
+      "id": "CSB-DF-065",
+      "title": "HEALTHCHECK NONE",
+      "target": "dockerfile",
+      "category": "Process model",
+      "severity": "Medium",
+      "summary": "HEALTHCHECK NONE disables checks.",
+      "risk": "Disabled healthchecks reduce failure detection.",
+      "remediation": "Provide a real HEALTHCHECK when applicable.",
+      "detailed_remediation": "Provide a real HEALTHCHECK when applicable.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "HEALTHCHECK NONE disables checks.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-066",
+      "title": "HEALTHCHECK secret fragments",
+      "target": "dockerfile",
+      "category": "Secrets",
+      "severity": "High",
+      "summary": "HEALTHCHECK includes secret-like command fragments.",
+      "risk": "Healthcheck commands may be exposed via inspect.",
+      "remediation": "Do not embed secrets in HEALTHCHECK.",
+      "detailed_remediation": "Do not embed secrets in HEALTHCHECK.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "HEALTHCHECK includes secret-like command fragments.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-070",
+      "title": "COPY/ADD dot with no dockerignore",
+      "target": "dockerfile",
+      "category": "Build context",
+      "severity": "Medium",
+      "summary": "COPY/ADD . . without a supplied .dockerignore.",
+      "risk": "Broad copies risk including secrets and VCS metadata.",
+      "remediation": "Provide .dockerignore and copy narrowly.",
+      "detailed_remediation": "Provide .dockerignore and copy narrowly.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "COPY/ADD . . without a supplied .dockerignore.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-071",
+      "title": "dockerignore missing in project",
+      "target": "dockerfile",
+      "category": "Build context",
+      "severity": "Medium",
+      "summary": ".dockerignore missing from analyzed project.",
+      "risk": "Missing dockerignore increases context leakage risk.",
+      "remediation": "Add a .dockerignore excluding secrets and VCS metadata.",
+      "detailed_remediation": "Add a .dockerignore excluding secrets and VCS metadata.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": ".dockerignore missing from analyzed project.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-072",
+      "title": "dockerignore weak exclusions",
+      "target": "dockerfile",
+      "category": "Build context",
+      "severity": "Low",
+      "summary": ".dockerignore does not exclude common sensitive files.",
+      "risk": "Sensitive files may enter build context.",
+      "remediation": "Exclude .env, keys, .git, credentials, etc.",
+      "detailed_remediation": "Exclude .env, keys, .git, credentials, etc.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": ".dockerignore does not exclude common sensitive files.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-073",
+      "title": "parent traversal in COPY/ADD",
+      "target": "dockerfile",
+      "category": "Build context",
+      "severity": "High",
+      "summary": "Dockerfile copies parent traversal paths.",
+      "risk": "Parent traversal can escape intended context.",
+      "remediation": "Do not COPY ../ paths.",
+      "detailed_remediation": "Do not COPY ../ paths.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Dockerfile copies parent traversal paths.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    },
+    {
+      "id": "CSB-DF-074",
+      "title": "broad copy from build stage",
+      "target": "dockerfile",
+      "category": "Build context",
+      "severity": "Informational",
+      "summary": "Final image copies broad content from a build stage.",
+      "risk": "Broad copies may include toolchains/secrets from builder.",
+      "remediation": "Copy only required runtime artifacts.",
+      "detailed_remediation": "Copy only required runtime artifacts.",
+      "references": [
+        "https://docs.docker.com/engine/security/",
+        "https://docs.docker.com/compose/compose-file/"
+      ],
+      "enabled": true,
+      "patchability": "manual",
+      "false_positives": "Legitimate workloads may require this setting; document justification via suppressions.",
+      "limitations": "Static analysis cannot verify runtime enforcement or host mitigations such as rootless mode.",
+      "detection_logic": "Final image copies broad content from a build stage.",
+      "profiles": [
+        "baseline",
+        "strict",
+        "development"
+      ],
+      "severity_overrides": {}
+    }
+  ]
+}

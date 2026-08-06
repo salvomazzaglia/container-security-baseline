@@ -1,0 +1,32 @@
+{
+  "name": "baseline",
+  "description": "Balanced production-oriented container configuration baseline.",
+  "version": "1.0.0",
+  "fail_on": "High",
+  "minimum_score": 0,
+  "allow_critical_suppressions": false,
+  "require_digest_pinning": false,
+  "require_non_root": true,
+  "require_read_only": false,
+  "require_cap_drop_all": false,
+  "require_no_new_privileges": true,
+  "require_resource_limits": false,
+  "require_pid_limit": false,
+  "require_healthcheck": true,
+  "require_bounded_logging": false,
+  "disallow_wildcard_ports": false,
+  "disallow_host_namespaces": true,
+  "disallow_external_file_refs": true,
+  "disabled_rules": [],
+  "severity_overrides": {},
+  "stateful_services": [],
+  "service_secret_expectations": {},
+  "backend_networks": [],
+  "scoring_deductions": {
+    "Critical": 25,
+    "High": 15,
+    "Medium": 7,
+    "Low": 2,
+    "Informational": 0
+  }
+}

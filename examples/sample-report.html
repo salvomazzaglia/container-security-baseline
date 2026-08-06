@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Container Security Baseline Report</title>
+<style>
+:root {
+  --bg: #f4f7f5;
+  --ink: #1a2421;
+  --muted: #5c6b65;
+  --accent: #0b6e4f;
+  --card: #ffffff;
+  --line: #d5e0db;
+  --crit: #8f1d1d;
+  --high: #9a4a00;
+  --med: #8a6d00;
+  --low: #3d5a80;
+  --info: #4a5568;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, #dceee6 0%, transparent 40%),
+    linear-gradient(180deg, #eef5f1 0%, var(--bg) 40%, #e8efe9 100%);
+  line-height: 1.45;
+}
+header, main, footer { max-width: 1100px; margin: 0 auto; padding: 1.25rem; }
+header h1 { margin: 0 0 0.25rem; font-size: 1.8rem; letter-spacing: -0.02em; color: var(--accent); }
+.meta { color: var(--muted); font-size: 0.95rem; }
+.banner {
+  background: #12352c;
+  color: #f3fff9;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0 1.5rem;
+}
+.banner strong { display: block; font-size: 1.05rem; margin-bottom: 0.35rem; }
+.scorebox {
+  display: flex; gap: 1rem; flex-wrap: wrap; align-items: stretch; margin: 1rem 0 1.5rem;
+}
+.score {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  min-width: 160px;
+}
+.score .value { font-size: 2.6rem; font-weight: 700; color: var(--accent); }
+.score .grade { font-size: 1.2rem; color: var(--muted); }
+.cards { display: flex; flex-wrap: wrap; gap: 0.75rem; flex: 1; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  min-width: 110px;
+}
+.card .num { font-size: 1.5rem; font-weight: 700; }
+.card .lbl { color: var(--muted); font-size: 0.85rem; }
+.sev-critical .num { color: var(--crit); }
+.sev-high .num { color: var(--high); }
+.sev-medium .num { color: var(--med); }
+.sev-low .num { color: var(--low); }
+.sev-informational .num { color: var(--info); }
+section {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+h2 { margin-top: 0; font-size: 1.15rem; color: var(--accent); }
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+th, td { border-bottom: 1px solid var(--line); padding: 0.55rem 0.4rem; text-align: left; vertical-align: top; }
+th { color: var(--muted); font-weight: 600; }
+ul { margin: 0.25rem 0 0 1.1rem; }
+.notice {
+  border-left: 4px solid var(--accent);
+  padding: 0.75rem 1rem;
+  background: #f2faf6;
+  border-radius: 0 8px 8px 0;
+}
+footer { color: var(--muted); font-size: 0.85rem; padding-bottom: 2rem; }
+@media (max-width: 700px) {
+  table, thead, tbody, th, td, tr { display: block; }
+  th { display: none; }
+  td { border: none; padding: 0.2rem 0; }
+  tr { border-bottom: 1px solid var(--line); margin-bottom: 0.75rem; padding-bottom: 0.75rem; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>container-security-baseline</h1>
+  <div class="meta">Offline static analysis report · v1.0.0 · 2026-08-06T12:04:50Z</div>
+  <div class='banner' role='status'><strong>SYNTHETIC DEMONSTRATION DATA</strong><p>This report contains synthetic container-configuration data created exclusively for demonstration, testing, and documentation purposes.</p></div>
+  <div class="scorebox">
+    <div class="score">
+      <div class="value">0</div>
+      <div class="grade">Grade F</div>
+    </div>
+    <div class="cards"><div class='card sev-critical'><div class='num'>12</div><div class='lbl'>Critical</div></div><div class='card sev-high'><div class='num'>14</div><div class='lbl'>High</div></div><div class='card sev-informational'><div class='num'>6</div><div class='lbl'>Informational</div></div><div class='card sev-low'><div class='num'>20</div><div class='lbl'>Low</div></div><div class='card sev-medium'><div class='num'>13</div><div class='lbl'>Medium</div></div></div>
+  </div>
+</header>
+<main>
+  <section>
+    <h2>Project summary</h2>
+    <p><strong>Policy:</strong> baseline ·
+       <strong>Privacy:</strong> masked ·
+       <strong>Parsing:</strong> ok ·
+       <strong>Exit code:</strong> 2</p>
+    <p>Started at 100. Applied 59 finding-based deduction(s). Suppressed findings do not reduce the score. Grade F is a prioritization aid, not certification.</p>
+    <div class="notice">This report is the result of offline static configuration analysis only. It does not inspect image contents, running containers, the Docker daemon, or host runtime protections. A high score is not a security certification.</div>
+  </section>
+  <section>
+    <h2>Compose services</h2>
+    <ul><li>synthetic-api</li><li>synthetic-web</li></ul>
+  </section>
+  <section>
+    <h2>Dockerfile stages</h2>
+    <ul><li>None</li></ul>
+  </section>
+  <section>
+    <h2>Findings</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Rule</th><th>Severity</th><th>Status</th><th>Target</th>
+          <th>Summary</th><th>File</th><th>Evidence</th><th>Remediation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>CSB-CMP-001</td><td>Critical</td><td>Fail</td><td>synthetic-web</td><td>Service sets privileged: true.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.privileged=true</td><td>Set privileged: false or remove the field.</td></tr><tr><td>CSB-CMP-001</td><td>Critical</td><td>Fail</td><td>synthetic-api</td><td>Service sets privileged: true.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.privileged=true</td><td>Set privileged: false or remove the field.</td></tr><tr><td>CSB-CMP-002</td><td>Critical</td><td>Fail</td><td>synthetic-web</td><td>A Docker/Podman runtime socket appears to be bind-mounted.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web mounts a path matching a runtime socket pattern</td><td>Do not mount docker.sock/podman.sock; use least-privilege APIs or socket proxies if required.</td></tr><tr><td>CSB-CMP-002</td><td>Critical</td><td>Fail</td><td>synthetic-api</td><td>A Docker/Podman runtime socket appears to be bind-mounted.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api mounts a path matching a runtime socket pattern</td><td>Do not mount docker.sock/podman.sock; use least-privilege APIs or socket proxies if required.</td></tr><tr><td>CSB-CMP-004</td><td>High</td><td>Fail</td><td>synthetic-web</td><td>Sensitive host path mounted read-write.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web mounts sensitive path read-write (target=/var/run/docker.sock)</td><td>Prefer read-only mounts or remove the mount; use named volumes for app data.</td></tr><tr><td>CSB-CMP-004</td><td>High</td><td>Fail</td><td>synthetic-api</td><td>Sensitive host path mounted read-write.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api mounts sensitive path read-write (target=/var/run/docker.sock)</td><td>Prefer read-only mounts or remove the mount; use named volumes for app data.</td></tr><tr><td>CSB-CMP-006</td><td>High</td><td>Fail</td><td>synthetic-web</td><td>Service uses network_mode: host.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.network_mode=host</td><td>Use bridge/user-defined networks and publish only required ports.</td></tr><tr><td>CSB-CMP-007</td><td>Critical</td><td>Fail</td><td>synthetic-web</td><td>Service uses pid: host.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.pid=host</td><td>Remove pid: host unless strictly required and suppressed with justification.</td></tr><tr><td>CSB-CMP-020</td><td>Critical</td><td>Fail</td><td>synthetic-web</td><td>Service adds ALL capabilities.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.cap_add includes ALL</td><td>Remove cap_add ALL; add only required capabilities.</td></tr><tr><td>CSB-CMP-021</td><td>Critical</td><td>Fail</td><td>synthetic-api</td><td>Dangerous Linux capabilities are added.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.cap_add includes SYS_ADMIN</td><td>Drop ALL and add only justified capabilities.</td></tr><tr><td>CSB-CMP-021</td><td>High</td><td>Fail</td><td>synthetic-api</td><td>Dangerous Linux capabilities are added.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.cap_add includes NET_ADMIN</td><td>Drop ALL and add only justified capabilities.</td></tr><tr><td>CSB-CMP-022</td><td>Informational</td><td>Fail</td><td>synthetic-web</td><td>No cap_drop configured.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.cap_drop is missing</td><td>Add cap_drop: [ALL] and re-add only required capabilities.</td></tr><tr><td>CSB-CMP-022</td><td>Informational</td><td>Fail</td><td>synthetic-api</td><td>No cap_drop configured.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.cap_drop is missing</td><td>Add cap_drop: [ALL] and re-add only required capabilities.</td></tr><tr><td>CSB-CMP-024</td><td>Critical</td><td>Fail</td><td>synthetic-web</td><td>security_opt disables seccomp (seccomp=unconfined).</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web disables seccomp</td><td>Remove seccomp=unconfined; use default or a tailored profile.</td></tr><tr><td>CSB-CMP-026</td><td>Medium</td><td>Fail</td><td>synthetic-web</td><td>no-new-privileges is not enabled.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web missing no-new-privileges</td><td>Add security_opt: [no-new-privileges:true].</td></tr><tr><td>CSB-CMP-026</td><td>Medium</td><td>Fail</td><td>synthetic-api</td><td>no-new-privileges is not enabled.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api missing no-new-privileges</td><td>Add security_opt: [no-new-privileges:true].</td></tr><tr><td>CSB-CMP-031</td><td>High</td><td>Fail</td><td>synthetic-web</td><td>Service explicitly runs as root (user root or UID 0).</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.user is root/UID 0</td><td>Run as a non-root UID/GID.</td></tr><tr><td>CSB-CMP-031</td><td>High</td><td>Fail</td><td>synthetic-api</td><td>Service explicitly runs as root (user root or UID 0).</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.user is root/UID 0</td><td>Run as a non-root UID/GID.</td></tr><tr><td>CSB-CMP-040</td><td>Low</td><td>Fail</td><td>synthetic-web</td><td>read_only root filesystem is not enabled.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.read_only is not true</td><td>Set read_only: true and use tmpfs/volumes for writable paths.</td></tr><tr><td>CSB-CMP-040</td><td>Low</td><td>Fail</td><td>synthetic-api</td><td>read_only root filesystem is not enabled.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.read_only is not true</td><td>Set read_only: true and use tmpfs/volumes for writable paths.</td></tr><tr><td>CSB-CMP-041</td><td>Low</td><td>Fail</td><td>synthetic-web</td><td>Writable root filesystem without documented need.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.read_only is not true</td><td>Enable read_only when application-compatible.</td></tr><tr><td>CSB-CMP-041</td><td>Low</td><td>Fail</td><td>synthetic-api</td><td>Writable root filesystem without documented need.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.read_only is not true</td><td>Enable read_only when application-compatible.</td></tr><tr><td>CSB-CMP-044</td><td>Informational</td><td>Fail</td><td>synthetic-web</td><td>Absolute host bind path used.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web uses absolute host bind path</td><td>Prefer named volumes or project-relative binds when possible.</td></tr><tr><td>CSB-CMP-044</td><td>Informational</td><td>Fail</td><td>synthetic-api</td><td>Absolute host bind path used.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api uses absolute host bind path</td><td>Prefer named volumes or project-relative binds when possible.</td></tr><tr><td>CSB-CMP-045</td><td>Medium</td><td>Fail</td><td>synthetic-web</td><td>Bind source appears outside the project root.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web bind source appears outside project root</td><td>Keep binds within the analyzed project root.</td></tr><tr><td>CSB-CMP-045</td><td>Medium</td><td>Fail</td><td>synthetic-api</td><td>Bind source appears outside the project root.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api bind source appears outside project root</td><td>Keep binds within the analyzed project root.</td></tr><tr><td>CSB-CMP-046</td><td>Low</td><td>Fail</td><td>synthetic-web</td><td>Short volume syntax is ambiguous for analysis/patching.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web uses ambiguous short volume syntax</td><td>Prefer long syntax with explicit type/source/target/read_only.</td></tr><tr><td>CSB-CMP-047</td><td>Informational</td><td>Fail</td><td>synthetic-web</td><td>Volume mode/read_only not specified.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web volume missing explicit read_only/mode</td><td>Set read_only explicitly when write access is unnecessary.</td></tr><tr><td>CSB-CMP-050</td><td>Critical</td><td>Fail</td><td>synthetic-web</td><td>Likely secret embedded directly in environment.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.environment.API_SECRET=[REDACTED] (fingerprint=b4aa691747a2)</td><td>Use Compose secrets or an external secret manager; remove literals.</td></tr><tr><td>CSB-CMP-050</td><td>Critical</td><td>Fail</td><td>synthetic-web</td><td>Likely secret embedded directly in environment.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.environment.DATABASE_PASSWORD=[REDACTED] (fingerprint=b4aa691747a2)</td><td>Use Compose secrets or an external secret manager; remove literals.</td></tr><tr><td>CSB-CMP-050</td><td>Critical</td><td>Fail</td><td>synthetic-api</td><td>Likely secret embedded directly in environment.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.environment.TOKEN=[REDACTED] (fingerprint=b4aa691747a2)</td><td>Use Compose secrets or an external secret manager; remove literals.</td></tr><tr><td>CSB-CMP-058</td><td>Informational</td><td>NotApplicable</td><td>-</td><td>No service_secret_expectations declared in policy</td><td>examples/compose/insecure-compose.yml</td><td>No service_secret_expectations declared in policy</td><td>Align service secrets with policy allowlists.</td></tr><tr><td>CSB-CMP-070</td><td>Medium</td><td>Fail</td><td>synthetic-web</td><td>Port published on wildcard interfaces (0.0.0.0/::).</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web publishes port on wildcard/all interfaces (target=8080)</td><td>Bind to 127.0.0.1 or a specific interface when possible.</td></tr><tr><td>CSB-CMP-070</td><td>Medium</td><td>Fail</td><td>synthetic-api</td><td>Port published on wildcard interfaces (0.0.0.0/::).</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api publishes port on wildcard/all interfaces (target=3000)</td><td>Bind to 127.0.0.1 or a specific interface when possible.</td></tr><tr><td>CSB-CMP-072</td><td>High</td><td>Fail</td><td>synthetic-web</td><td>Host networking combined with published ports or broad privileges.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web combines host networking with ports/privileges</td><td>Remove host networking and excess privileges.</td></tr><tr><td>CSB-CMP-073</td><td>Informational</td><td>NotApplicable</td><td>-</td><td>No backend_networks declared in policy</td><td>examples/compose/insecure-compose.yml</td><td>No backend_networks declared in policy</td><td>Mark backend networks as internal: true when appropriate.</td></tr><tr><td>CSB-CMP-074</td><td>Informational</td><td>NotApplicable</td><td>-</td><td>No explicit network attachment expectations in policy</td><td>examples/compose/insecure-compose.yml</td><td>No explicit network attachment expectations in policy</td><td>Attach services only to required networks.</td></tr><tr><td>CSB-CMP-080</td><td>Low</td><td>Fail</td><td>synthetic-web</td><td>No memory limit configured.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web has no memory limit</td><td>Set mem_limit or deploy.resources.limits.memory.</td></tr><tr><td>CSB-CMP-080</td><td>Low</td><td>Fail</td><td>synthetic-api</td><td>No memory limit configured.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api has no memory limit</td><td>Set mem_limit or deploy.resources.limits.memory.</td></tr><tr><td>CSB-CMP-081</td><td>Low</td><td>Fail</td><td>synthetic-web</td><td>No CPU limit configured.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web has no CPU limit</td><td>Set cpus or deploy CPU limits.</td></tr><tr><td>CSB-CMP-081</td><td>Low</td><td>Fail</td><td>synthetic-api</td><td>No CPU limit configured.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api has no CPU limit</td><td>Set cpus or deploy CPU limits.</td></tr><tr><td>CSB-CMP-082</td><td>Low</td><td>Fail</td><td>synthetic-web</td><td>No PID limit configured.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web has no PID limit</td><td>Set pids_limit or deploy pids limits.</td></tr><tr><td>CSB-CMP-082</td><td>Low</td><td>Fail</td><td>synthetic-api</td><td>No PID limit configured.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api has no PID limit</td><td>Set pids_limit or deploy pids limits.</td></tr><tr><td>CSB-CMP-085</td><td>Medium</td><td>Fail</td><td>synthetic-web</td><td>No healthcheck defined for a long-running service.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web has no healthcheck</td><td>Add a HEALTHCHECK-compatible Compose healthcheck.</td></tr><tr><td>CSB-CMP-085</td><td>Medium</td><td>Fail</td><td>synthetic-api</td><td>No healthcheck defined for a long-running service.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api has no healthcheck</td><td>Add a HEALTHCHECK-compatible Compose healthcheck.</td></tr><tr><td>CSB-CMP-089</td><td>Low</td><td>Fail</td><td>synthetic-web</td><td>Restart policy absent.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.restart is absent</td><td>Set an explicit restart policy appropriate to the workload.</td></tr><tr><td>CSB-CMP-089</td><td>Low</td><td>Fail</td><td>synthetic-api</td><td>Restart policy absent.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.restart is absent</td><td>Set an explicit restart policy appropriate to the workload.</td></tr><tr><td>CSB-CMP-091</td><td>Informational</td><td>NotApplicable</td><td>-</td><td>No stateful_services declared in policy</td><td>examples/compose/insecure-compose.yml</td><td>No stateful_services declared in policy</td><td>Set stop_grace_period when policy marks the service stateful.</td></tr><tr><td>CSB-CMP-100</td><td>Informational</td><td>Fail</td><td>synthetic-web</td><td>Logging driver or options absent.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.logging absent</td><td>Configure logging with size/file rotation.</td></tr><tr><td>CSB-CMP-101</td><td>Low</td><td>Fail</td><td>synthetic-api</td><td>json-file logging without max-size.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.logging missing max-size</td><td>Set max-size for json-file driver.</td></tr><tr><td>CSB-CMP-102</td><td>Low</td><td>Fail</td><td>synthetic-api</td><td>json-file logging without max-file.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.logging missing max-file</td><td>Set max-file for json-file driver.</td></tr><tr><td>CSB-CMP-110</td><td>Medium</td><td>Fail</td><td>synthetic-web</td><td>Image reference uses the latest tag.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.image uses latest tag</td><td>Pin to a specific version tag or digest.</td></tr><tr><td>CSB-CMP-110</td><td>Medium</td><td>Fail</td><td>synthetic-api</td><td>Image reference uses the latest tag.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.image uses latest tag</td><td>Pin to a specific version tag or digest.</td></tr><tr><td>CSB-CMP-112</td><td>Low</td><td>Fail</td><td>synthetic-web</td><td>Image is not pinned by digest.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-web.image is not digest-pinned</td><td>Pin by digest when policy requires.</td></tr><tr><td>CSB-CMP-112</td><td>Low</td><td>Fail</td><td>synthetic-api</td><td>Image is not pinned by digest.</td><td>examples/compose/insecure-compose.yml</td><td>services.synthetic-api.image is not digest-pinned</td><td>Pin by digest when policy requires.</td></tr><tr><td>CSB-DF-001</td><td>Medium</td><td>Fail</td><td>-</td><td>FROM uses latest tag.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>FROM uses latest (registry.example.invalid/synthetic-app:latest)</td><td>Pin FROM to a version tag or digest.</td></tr><tr><td>CSB-DF-003</td><td>Low</td><td>Fail</td><td>-</td><td>FROM is not digest-pinned.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>FROM is not digest-pinned</td><td>Pin by digest when policy requires.</td></tr><tr><td>CSB-DF-011</td><td>High</td><td>Fail</td><td>-</td><td>Final USER is root or UID 0.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>Final USER is root or UID 0</td><td>Switch to a non-root user before ENTRYPOINT/CMD.</td></tr><tr><td>CSB-DF-021</td><td>High</td><td>Fail</td><td>-</td><td>ARG contains secret-like key.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>ARG API_SECRET is secret-like</td><td>Use BuildKit secret mounts.</td></tr><tr><td>CSB-DF-021</td><td>High</td><td>Fail</td><td>-</td><td>ARG contains secret-like key.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>ARG DATABASE_PASSWORD is secret-like</td><td>Use BuildKit secret mounts.</td></tr><tr><td>CSB-DF-022</td><td>Critical</td><td>Fail</td><td>-</td><td>Likely secret literal in ENV/ARG/RUN/CMD/ENTRYPOINT.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>ARG contains secret-like literal (fingerprint=b4aa691747a2, value=[REDACTED])</td><td>Remove literals; rotate any exposed credentials.</td></tr><tr><td>CSB-DF-024</td><td>High</td><td>Fail</td><td>-</td><td>Build secret passed through ARG instead of BuildKit secret mount.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>Secret-like ARG API_SECRET without BuildKit secret mount</td><td>Use RUN --mount=type=secret.</td></tr><tr><td>CSB-DF-024</td><td>High</td><td>Fail</td><td>-</td><td>Build secret passed through ARG instead of BuildKit secret mount.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>Secret-like ARG DATABASE_PASSWORD without BuildKit secret mount</td><td>Use RUN --mount=type=secret.</td></tr><tr><td>CSB-DF-032</td><td>High</td><td>Fail</td><td>-</td><td>curl or wget piped directly to a shell.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>curl/wget piped directly to a shell</td><td>Download, verify checksum/signature, then install.</td></tr><tr><td>CSB-DF-033</td><td>Medium</td><td>Fail</td><td>-</td><td>Downloaded artifact lacks visible checksum verification nearby.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>Download without visible checksum verification in same step</td><td>Verify checksums/signatures in the same layer.</td></tr><tr><td>CSB-DF-050</td><td>High</td><td>Fail</td><td>-</td><td>chmod 777 or equivalent broad writable permission.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>chmod 777 or equivalent broad writable permission</td><td>Use least privilege modes (e.g. 750/640).</td></tr><tr><td>CSB-DF-060</td><td>Low</td><td>Fail</td><td>-</td><td>Shell-form ENTRYPOINT used.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>Shell-form ENTRYPOINT used</td><td>Prefer exec-form ENTRYPOINT JSON arrays.</td></tr><tr><td>CSB-DF-064</td><td>Low</td><td>Fail</td><td>-</td><td>HEALTHCHECK missing.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>HEALTHCHECK missing</td><td>Add HEALTHCHECK when policy requires.</td></tr><tr><td>CSB-DF-070</td><td>Medium</td><td>Fail</td><td>-</td><td>COPY/ADD . . without a supplied .dockerignore.</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>COPY . . without supplied .dockerignore</td><td>Provide .dockerignore and copy narrowly.</td></tr><tr><td>CSB-DF-071</td><td>Medium</td><td>NotApplicable</td><td>-</td><td>Project-directory analysis not requested</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>Project-directory analysis not requested</td><td>Add a .dockerignore excluding secrets and VCS metadata.</td></tr><tr><td>CSB-DF-072</td><td>Low</td><td>NotApplicable</td><td>-</td><td>.dockerignore not available for inspection</td><td>examples/dockerfiles/Dockerfile.insecure</td><td>.dockerignore not available for inspection</td><td>Exclude .env, keys, .git, credentials, etc.</td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section>
+    <h2>Suppressions</h2>
+    <ul><li>None</li></ul>
+  </section>
+  <section>
+    <h2>Recommendations</h2>
+    <ul><li>Prioritize remediating unsuppressed Critical findings before deployment.</li><li>Remove embedded secret literals and migrate to a secret manager or Compose secrets.</li><li>Eliminate privileged mode and runtime socket mounts unless absolutely required.</li></ul>
+  </section>
+  <section>
+    <h2>Input-safety / parsing warnings</h2>
+    <ul><li>None</li></ul>
+  </section>
+  <section>
+    <h2>Static-analysis limitations</h2>
+    <ul><li>Static configuration analysis cannot inspect image contents.</li><li>Static analysis cannot determine the effective runtime state.</li><li>Static analysis cannot verify the Docker daemon configuration.</li><li>Static analysis cannot verify host kernel, AppArmor, SELinux, seccomp, user-namespace, rootless-mode, or runtime protections unless those values are explicitly represented in the supplied configuration.</li><li>A passing score is not a security certification.</li><li>A finding does not prove exploitability.</li><li>Referenced env_file/secrets/configs/include/extends targets are not read.</li><li>Compose interpolation is detected but never resolved.</li></ul>
+  </section>
+  <section>
+    <h2>Exit codes</h2>
+    <ul>
+      <li>0 — success / no policy failure</li>
+      <li>1 — findings below fail threshold</li>
+      <li>2 — policy failure (threshold or minimum score)</li>
+      <li>3 — error (invalid input, parse failure, unsafe path)</li>
+    </ul>
+  </section>
+</main>
+<footer>
+  Generated by container-security-baseline. No remote scripts, styles, fonts, or images are loaded.
+</footer>
+</body>
+</html>

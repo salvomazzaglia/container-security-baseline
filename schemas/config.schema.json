@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/salvomazzaglia/container-security-baseline/schemas/config.schema.json",
+  "title": "container-security-baseline configuration",
+  "description": "Tool configuration aligned with config/default.config.json and config.load_config.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "parser": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "maximum_file_bytes": { "type": "integer", "minimum": 1 },
+        "maximum_depth": { "type": "integer", "minimum": 1 },
+        "maximum_nodes": { "type": "integer", "minimum": 1 },
+        "maximum_aliases": { "type": "integer", "minimum": 0 },
+        "maximum_scalar_length": { "type": "integer", "minimum": 1 },
+        "maximum_sequence_length": { "type": "integer", "minimum": 1 },
+        "maximum_mapping_size": { "type": "integer", "minimum": 1 },
+        "maximum_documents": { "type": "integer", "minimum": 1 },
+        "reject_duplicate_keys": { "type": "boolean" },
+        "reject_custom_tags": { "type": "boolean" }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "follow_symlinks": { "type": "boolean" },
+        "read_referenced_files": { "type": "boolean" },
+        "resolve_interpolation": { "type": "boolean" },
+        "invoke_docker": { "type": "boolean", "const": false },
+        "network_access": { "type": "boolean" }
+      }
+    },
+    "discovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "compose_names": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "dockerfile_names": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "secret_detection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "redact_all_values": { "type": "boolean" },
+        "maximum_value_length": { "type": "integer", "minimum": 1 },
+        "high_entropy_min_length": { "type": "integer", "minimum": 1 },
+        "high_entropy_threshold": { "type": "number", "minimum": 0 }
+      }
+    },
+    "scoring": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "starting_score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "deductions": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "Critical": { "type": "integer", "minimum": 0 },
+            "High": { "type": "integer", "minimum": 0 },
+            "Medium": { "type": "integer", "minimum": 0 },
+            "Low": { "type": "integer", "minimum": 0 },
+            "Informational": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "default": { "type": "string", "minLength": 1 },
+        "allow_critical_suppressions": { "type": "boolean" }
+      }
+    },
+    "reporting": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "formats": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["json", "html", "sarif"]
+          },
+          "uniqueItems": true
+        },
+        "privacy_mode": {
+          "type": "string",
+          "enum": ["masked", "full"]
+        },
+        "include_passed": { "type": "boolean" }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["masked", "full"]
+        },
+        "mask_absolute_paths": { "type": "boolean" }
+      }
+    },
+    "path_masks": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "remediation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "generate_patches": { "type": "boolean" },
+        "refuse_on_anchors": { "type": "boolean" },
+        "refuse_on_secrets_nearby": { "type": "boolean" }
+      }
+    },
+    "logging": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+        }
+      }
+    },
+    "sensitive_host_paths": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "dangerous_capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Critical": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "High": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "Medium": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "sensitive_ports": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 1, "maximum": 65535 }
+    },
+    "secret_key_patterns": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "package_debug_tools": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

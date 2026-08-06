@@ -1,0 +1,6 @@
+# SYNTHETIC — root bind mount
+services:
+  bad:
+    image: registry.example.invalid/bad:1.0
+    volumes:
+      - /:/hostroot

@@ -1,0 +1,37 @@
+name: Feature request
+description: Suggest an enhancement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / opportunity
+      description: What gap does this fill for Compose/Dockerfile security review?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Keep scope focused on offline static analysis and configuration baselines.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Constraints acknowledged
+      options:
+        - label: Feature remains offline static analysis (no Docker daemon / no network by default)
+          required: true
+        - label: No automatic remediation of input files
+          required: true
+        - label: No secrets or real infrastructure files will be included in examples
+          required: true
+        - label: Documentation will avoid CIS/NIST certification or “secure container” claims
+          required: true

@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/salvomazzaglia/container-security-baseline/schemas/finding.schema.json",
+  "title": "container-security-baseline finding",
+  "description": "Single finding aligned with models.Finding.to_dict().",
+  "type": "object",
+  "required": [
+    "rule_id",
+    "title",
+    "target_type",
+    "category",
+    "severity",
+    "status",
+    "summary",
+    "risk",
+    "evidence_redacted",
+    "remediation",
+    "fingerprint"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "rule_id": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "target_type": {
+      "type": "string",
+      "enum": ["compose", "dockerfile", "project"]
+    },
+    "category": { "type": "string", "minLength": 1 },
+    "severity": {
+      "type": "string",
+      "enum": ["Informational", "Low", "Medium", "High", "Critical"]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Pass",
+        "Fail",
+        "Warning",
+        "NotApplicable",
+        "Unavailable",
+        "Error",
+        "Suppressed"
+      ]
+    },
+    "summary": { "type": "string" },
+    "risk": { "type": "string" },
+    "evidence_redacted": { "type": "string" },
+    "remediation": { "type": "string" },
+    "detailed_remediation": { "type": ["string", "null"] },
+    "references": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "file": { "type": "string" },
+    "line_start": { "type": ["integer", "null"], "minimum": 1 },
+    "line_end": { "type": ["integer", "null"], "minimum": 1 },
+    "service": { "type": ["string", "null"] },
+    "stage": { "type": ["string", "null"] },
+    "property_path": { "type": ["string", "null"] },
+    "fingerprint": { "type": "string" },
+    "suppressed": { "type": "boolean" },
+    "suppression_id": { "type": ["string", "null"] },
+    "suppression_justification": { "type": ["string", "null"] },
+    "evaluated_at_utc": { "type": "string" },
+    "evaluator_version": { "type": "string" },
+    "error_message": { "type": ["string", "null"] },
+    "patchability": {
+      "type": "string",
+      "enum": ["safe", "manual", "unsupported", "ambiguous"]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    }
+  }
+}

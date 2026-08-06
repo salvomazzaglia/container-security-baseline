@@ -1,0 +1,133 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/salvomazzaglia/container-security-baseline/schemas/report.schema.json",
+  "title": "container-security-baseline report",
+  "description": "Analysis report aligned with models.Report.to_dict().",
+  "type": "object",
+  "required": [
+    "tool_name",
+    "tool_version",
+    "schema_version",
+    "generated_at_utc",
+    "score",
+    "grade",
+    "findings",
+    "security_notice",
+    "exit_code"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "tool_name": { "type": "string", "minLength": 1 },
+    "tool_version": { "type": "string", "minLength": 1 },
+    "schema_version": { "type": "string", "minLength": 1 },
+    "generated_at_utc": { "type": "string", "minLength": 1 },
+    "synthetic": { "type": "boolean" },
+    "input_summary": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "project_root": { "type": "string" },
+        "compose_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "dockerfile_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "compose_json_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "privacy_mode": { "type": "string" },
+        "policy_name": { "type": "string" }
+      }
+    },
+    "policy": { "type": "object" },
+    "privacy_mode": {
+      "type": "string",
+      "enum": ["masked", "full"]
+    },
+    "parsing_status": {
+      "type": "string",
+      "enum": ["ok", "partial", "error"]
+    },
+    "files_analyzed": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "compose_services": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "dockerfile_stages": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "result_counts": {
+      "type": "object",
+      "additionalProperties": { "type": "integer" }
+    },
+    "severity_counts": {
+      "type": "object",
+      "additionalProperties": { "type": "integer" }
+    },
+    "category_counts": {
+      "type": "object",
+      "additionalProperties": { "type": "integer" }
+    },
+    "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "grade": { "type": "string", "minLength": 1 },
+    "score_explanation": { "type": "string" },
+    "highest_severity": {
+      "type": ["string", "null"],
+      "enum": ["Informational", "Low", "Medium", "High", "Critical", null]
+    },
+    "findings": {
+      "type": "array",
+      "description": "Finding objects; validated in detail by finding.schema.json",
+      "items": { "type": "object" }
+    },
+    "suppressions": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "unavailable_checks": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "parsing_warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "security_notice": { "type": "string", "minLength": 1 },
+    "exit_code": { "type": "integer", "minimum": 0 },
+    "score_detail": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "grade": { "type": "string" },
+        "starting_score": { "type": "integer" },
+        "deductions": {
+          "type": "array",
+          "items": { "type": "object" }
+        },
+        "explanation": { "type": "string" },
+        "partial": { "type": "boolean" },
+        "highest_severity": { "type": ["string", "null"] }
+      }
+    },
+    "comparison": {
+      "type": ["object", "null"]
+    }
+  }
+}

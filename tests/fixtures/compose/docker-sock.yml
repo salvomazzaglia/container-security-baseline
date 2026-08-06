@@ -1,0 +1,6 @@
+# SYNTHETIC — docker.sock mount
+services:
+  agent:
+    image: registry.example.invalid/agent:1.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

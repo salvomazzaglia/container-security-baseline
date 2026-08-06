@@ -1,0 +1,78 @@
+# SYNTHETIC EXAMPLE — YAML anchors/aliases for informational rule testing.
+# All hosts, registries, secrets, and service names are fake.
+# Do not run. Anchors are intentional for parser/remediation edge cases.
+
+x-synthetic-logging: &synthetic-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-synthetic-security: &synthetic-security
+  user: "10001:10001"
+  read_only: true
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+
+x-synthetic-resources: &synthetic-resources
+  limits:
+    cpus: "0.50"
+    memory: 256M
+    pids: 100
+
+services:
+  synthetic-web:
+    <<: *synthetic-security
+    image: registry.example.invalid/synthetic-web:1.0.0@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    logging: *synthetic-logging
+    deploy:
+      resources: *synthetic-resources
+    networks:
+      - frontend
+    ports:
+      - "127.0.0.1:8080:8080"
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck", "http://127.0.0.1:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  synthetic-api:
+    <<: *synthetic-security
+    image: registry.example.invalid/synthetic-api:1.0.0@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+    user: "10002:10002"
+    logging: *synthetic-logging
+    deploy:
+      resources: *synthetic-resources
+    networks:
+      - backend
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck", "http://127.0.0.1:3000/ready"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  synthetic-worker:
+    <<: *synthetic-security
+    image: registry.example.invalid/synthetic-worker:1.0.0@sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    user: "10006:10006"
+    logging: *synthetic-logging
+    deploy:
+      resources: *synthetic-resources
+    networks:
+      - backend
+    environment:
+      # Alias reuse of a scalar for informational parsing checks
+      WORKER_MODE: &worker-mode batch
+      WORKER_PROFILE: *worker-mode
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+    internal: true

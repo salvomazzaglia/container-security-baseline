@@ -1,0 +1,174 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "container-security-baseline"
+version = "1.0.0"
+description = "Offline static-analysis toolkit for Docker Compose and Dockerfile security baselines"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "Salvatore Mazzaglia", email = "90605302+salvomazzaglia@users.noreply.github.com" },
+]
+maintainers = [
+  { name = "Salvatore Mazzaglia", email = "90605302+salvomazzaglia@users.noreply.github.com" },
+]
+keywords = [
+  "container-security",
+  "docker",
+  "docker-compose",
+  "dockerfile",
+  "static-analysis",
+  "devsecops",
+  "policy-as-code",
+  "sarif",
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security",
+  "Topic :: Software Development :: Quality Assurance",
+  "Typing :: Typed",
+]
+dependencies = [
+  "PyYAML>=6.0.1",
+  "jsonschema>=4.21.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-cov>=5.0.0",
+  "ruff>=0.6.0",
+  "mypy>=1.11.0",
+  "build>=1.2.0",
+  "types-PyYAML>=6.0.12",
+  "types-jsonschema>=4.23.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/salvomazzaglia/container-security-baseline"
+Documentation = "https://github.com/salvomazzaglia/container-security-baseline#readme"
+Repository = "https://github.com/salvomazzaglia/container-security-baseline"
+Issues = "https://github.com/salvomazzaglia/container-security-baseline/issues"
+Changelog = "https://github.com/salvomazzaglia/container-security-baseline/blob/main/CHANGELOG.md"
+
+[project.scripts]
+container-security-baseline = "container_security_baseline.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["container_security_baseline*"]
+
+[tool.setuptools.package-data]
+container_security_baseline = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = [
+  "E",
+  "F",
+  "W",
+  "I",
+  "N",
+  "UP",
+  "B",
+  "A",
+  "C4",
+  "SIM",
+  "TCH",
+  "RUF",
+  "S",
+  "BLE",
+  "PERF",
+  "PTH",
+]
+ignore = [
+  "S101",
+  "S603",
+  "E501",
+  "PERF401",
+  "PERF403",
+  "TC001",
+  "TC002",
+  "TC003",
+  "SIM102",
+  "UP042",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "S104", "BLE001", "A001"]
+"scripts/**" = ["S101", "S105", "S106", "BLE001", "A002"]
+"scripts/_gen_rules.py" = ["S101", "S105", "E501", "A002"]
+"src/container_security_baseline/statuses.py" = ["A001", "S105"]
+"src/container_security_baseline/compose_rules.py" = ["S104", "S105", "SIM103"]
+"src/container_security_baseline/evaluator.py" = ["BLE001"]
+"src/container_security_baseline/secret_detection.py" = ["S105"]
+"src/container_security_baseline/html_report.py" = ["S104"]
+"examples/**" = ["S105", "S106"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+show_error_codes = true
+pretty = true
+mypy_path = "src"
+packages = ["container_security_baseline"]
+
+[[tool.mypy.overrides]]
+module = ["yaml.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = [
+  "-ra",
+  "--strict-markers",
+  "--strict-config",
+]
+filterwarnings = [
+  "error",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["container_security_baseline"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+fail_under = 70

@@ -1,0 +1,6 @@
+# SYNTHETIC Dockerfile with secrets
+FROM registry.example.invalid/app:latest
+ENV API_SECRET=SYNTHETIC_NOT_A_REAL_SECRET
+USER root
+COPY id_rsa /keys/
+RUN curl https://example.invalid/x | sh

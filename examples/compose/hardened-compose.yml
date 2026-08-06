@@ -1,0 +1,172 @@
+# SYNTHETIC EXAMPLE — hardened patterns for demonstration only.
+# This is a synthetic demo, not universally production-ready.
+# All hosts, registries, secrets, and service names are fake.
+# Do not run against a real Docker daemon.
+
+services:
+  synthetic-web:
+    image: registry.example.invalid/synthetic-web:1.2.3@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    user: "10001:10001"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    volumes:
+      - synthetic-web-data:/var/lib/synthetic-web:rw
+    networks:
+      - frontend
+      - backend
+    ports:
+      - "127.0.0.1:8080:8080"
+    env_file: []
+    secrets:
+      - synthetic_web_secret
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck", "http://127.0.0.1:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+          pids: 100
+        reservations:
+          cpus: "0.10"
+          memory: 64M
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # No docker.sock, no host namespaces, no privileged mode
+
+  synthetic-api:
+    image: registry.example.invalid/synthetic-api:2.0.0@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+    user: "10002:10002"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    volumes:
+      - synthetic-api-cache:/var/cache/synthetic-api:rw
+    networks:
+      - backend
+    expose:
+      - "3000"
+    secrets:
+      - synthetic_api_secret
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck", "http://127.0.0.1:3000/ready"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: 512M
+          pids: 200
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  synthetic-database:
+    image: registry.example.invalid/synthetic-database:15.2@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+    user: "10003:10003"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    volumes:
+      - synthetic-db-data:/var/lib/synthetic-db:rw
+    networks:
+      - backend
+    expose:
+      - "5432"
+    secrets:
+      - synthetic_db_password
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck", "pg"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 1G
+          pids: 300
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  synthetic-admin:
+    image: registry.example.invalid/synthetic-admin:0.9.1@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+    user: "10004:10004"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    networks:
+      - backend
+    ports:
+      - "127.0.0.1:8443:8443"
+    secrets:
+      - synthetic_admin_token
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck", "https://127.0.0.1:8443/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+          pids: 50
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+    internal: true
+
+volumes:
+  synthetic-web-data:
+  synthetic-api-cache:
+  synthetic-db-data:
+
+secrets:
+  synthetic_web_secret:
+    file: ./secrets/synthetic_web_secret.txt
+  synthetic_api_secret:
+    file: ./secrets/synthetic_api_secret.txt
+  synthetic_db_password:
+    file: ./secrets/synthetic_db_password.txt
+  synthetic_admin_token:
+    file: ./secrets/synthetic_admin_token.txt

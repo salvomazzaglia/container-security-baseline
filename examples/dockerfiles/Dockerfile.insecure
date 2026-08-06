@@ -1,0 +1,19 @@
+# SYNTHETIC EXAMPLE — intentionally insecure Dockerfile.
+# Do not build or run. All names and secrets are fake.
+
+FROM registry.example.invalid/synthetic-app:latest
+
+ARG API_SECRET=SYNTHETIC_NOT_A_REAL_SECRET
+ARG DATABASE_PASSWORD=SYNTHETIC_NOT_A_REAL_SECRET
+
+USER root
+
+RUN curl -fsSL https://example.invalid/install.sh | sh
+
+COPY . .
+
+RUN chmod 777 /app /tmp /var
+
+WORKDIR /app
+
+ENTRYPOINT /app/start.sh

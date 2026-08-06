@@ -1,0 +1,5 @@
+# SYNTHETIC — privileged service for CSB-CMP-001
+services:
+  web:
+    image: registry.example.invalid/web:1.0
+    privileged: true

@@ -1,0 +1,30 @@
+# SYNTHETIC EXAMPLE — multi-stage build for Dockerfile rule coverage.
+# Do not build or run. All names and digests are fake.
+
+FROM registry.example.invalid/synthetic-toolchain:1.0.0@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb AS deps
+
+WORKDIR /workspace
+COPY package.json package-lock.json ./
+RUN /usr/local/bin/synthetic-npm-ci
+
+FROM deps AS build
+
+COPY src/ ./src/
+COPY tsconfig.json ./
+RUN /usr/local/bin/synthetic-npm-build
+
+FROM registry.example.invalid/synthetic-runtime:1.0.0@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc AS runtime
+
+WORKDIR /app
+COPY --from=build --chown=10001:10001 /workspace/dist/ /app/dist/
+COPY --chown=10001:10001 package.json /app/package.json
+
+USER 10001:10001
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+  CMD ["/app/dist/healthcheck"]
+
+ENTRYPOINT ["/app/dist/server"]
+CMD ["--config", "/app/package.json"]

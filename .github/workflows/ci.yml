@@ -1,0 +1,92 @@
+# GitHub Actions CI — GitHub-hosted runners ONLY
+# NEVER use self-hosted runners
+# NEVER invoke docker / podman
+# NEVER require repository secrets
+# NEVER use pull_request_target
+#
+# Action pinning note: Prefer official actions pinned to verified full-length
+# commit SHAs. SHA verification against the official action repositories was
+# not completed for this workflow, so stable major tags are used instead.
+# Revisit and pin SHAs when verification can be completed.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Check out repository
+        # Prefer SHA pin when verified; using major tag until SHA verification completed
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        # Prefer SHA pin when verified; using major tag until SHA verification completed
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install project and development dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Ruff lint
+        run: python -m ruff check src tests scripts
+
+      - name: Ruff format check
+        run: python -m ruff format --check src tests scripts
+
+      - name: mypy
+        run: python -m mypy
+
+      - name: Pytest
+        run: python -m pytest --junitxml=test-results/junit.xml
+
+      - name: Generate synthetic demos and sample reports
+        run: |
+          python scripts/generate-demo-data.py
+          python scripts/generate-sample-reports.py
+
+      - name: Validate report schemas
+        run: python scripts/validate-schemas.py
+
+      - name: Repository guards
+        run: python scripts/repository-guards.py
+
+      - name: Build package
+        run: python -m build
+
+      - name: Upload artifacts
+        if: always()
+        # Prefer SHA pin when verified; using major tag until SHA verification completed
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-artifacts-${{ matrix.os }}-py${{ matrix.python-version }}
+          path: |
+            test-results/
+            examples/sample-report.json
+            examples/sample-report.html
+            examples/sample-report.sarif
+            examples/sample-remediation.patch
+            dist/
+          if-no-files-found: ignore

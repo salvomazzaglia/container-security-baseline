@@ -1,0 +1,4636 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "container-security-baseline",
+          "version": "1.0.0",
+          "informationUri": "https://github.com/salvomazzaglia/container-security-baseline",
+          "rules": [
+            {
+              "id": "CSB-CMP-001",
+              "name": "privileged mode enabled",
+              "shortDescription": {
+                "text": "Service sets privileged: true."
+              },
+              "fullDescription": {
+                "text": "Privileged mode significantly weakens container isolation and grants broad host access."
+              },
+              "help": {
+                "text": "Set privileged: false or remove the field."
+              },
+              "properties": {
+                "category": "Privilege",
+                "severity": "Critical",
+                "security-severity": "critical"
+              }
+            },
+            {
+              "id": "CSB-CMP-002",
+              "name": "Docker/runtime socket mounted",
+              "shortDescription": {
+                "text": "A Docker/Podman runtime socket appears to be bind-mounted."
+              },
+              "fullDescription": {
+                "text": "Mounting the runtime socket often equates to root-equivalent host control."
+              },
+              "help": {
+                "text": "Do not mount docker.sock/podman.sock; use least-privilege APIs or socket proxies if required."
+              },
+              "properties": {
+                "category": "Host access",
+                "severity": "Critical",
+                "security-severity": "critical"
+              }
+            },
+            {
+              "id": "CSB-CMP-003",
+              "name": "Host root filesystem bind-mounted",
+              "shortDescription": {
+                "text": "Host root filesystem appears bind-mounted into the container."
+              },
+              "fullDescription": {
+                "text": "Root bind mounts allow host filesystem compromise."
+              },
+              "help": {
+                "text": "Remove root bind mounts; mount only required subpaths read-only when necessary."
+              },
+              "properties": {
+                "category": "Host access",
+                "severity": "Critical",
+                "security-severity": "critical"
+              }
+            },
+            {
+              "id": "CSB-CMP-004",
+              "name": "Sensitive host path mounted read-write",
+              "shortDescription": {
+                "text": "Sensitive host path mounted read-write."
+              },
+              "fullDescription": {
+                "text": "Writable sensitive mounts can expose or alter host credentials and configuration."
+              },
+              "help": {
+                "text": "Prefer read-only mounts or remove the mount; use named volumes for app data."
+              },
+              "properties": {
+                "category": "Host access",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-005",
+              "name": "Sensitive host path mounted read-only",
+              "shortDescription": {
+                "text": "Sensitive host path mounted read-only."
+              },
+              "fullDescription": {
+                "text": "Read-only sensitive mounts may still expose secrets or host metadata."
+              },
+              "help": {
+                "text": "Avoid mounting sensitive host paths; use scoped files via secrets."
+              },
+              "properties": {
+                "category": "Host access",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-006",
+              "name": "network_mode host",
+              "shortDescription": {
+                "text": "Service uses network_mode: host."
+              },
+              "fullDescription": {
+                "text": "Host networking removes network namespace isolation."
+              },
+              "help": {
+                "text": "Use bridge/user-defined networks and publish only required ports."
+              },
+              "properties": {
+                "category": "Isolation",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-007",
+              "name": "pid host namespace",
+              "shortDescription": {
+                "text": "Service uses pid: host."
+              },
+              "fullDescription": {
+                "text": "Host PID namespace can enable process visibility and attack primitives."
+              },
+              "help": {
+                "text": "Remove pid: host unless strictly required and suppressed with justification."
+              },
+              "properties": {
+                "category": "Isolation",
+                "severity": "Critical",
+                "security-severity": "critical"
+              }
+            },
+            {
+              "id": "CSB-CMP-008",
+              "name": "ipc host namespace",
+              "shortDescription": {
+                "text": "Service uses ipc: host."
+              },
+              "fullDescription": {
+                "text": "Host IPC sharing weakens isolation between containers and host."
+              },
+              "help": {
+                "text": "Avoid ipc: host; use private IPC or share only between required services."
+              },
+              "properties": {
+                "category": "Isolation",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-009",
+              "name": "userns_mode host",
+              "shortDescription": {
+                "text": "User namespace isolation disabled or set to host."
+              },
+              "fullDescription": {
+                "text": "Disabling user namespaces can map container root to host root."
+              },
+              "help": {
+                "text": "Do not set userns_mode: host."
+              },
+              "properties": {
+                "category": "Isolation",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-010",
+              "name": "device mappings present",
+              "shortDescription": {
+                "text": "Service maps host devices into the container."
+              },
+              "fullDescription": {
+                "text": "Device access can allow low-level host interaction."
+              },
+              "help": {
+                "text": "Map only required devices; prefer none."
+              },
+              "properties": {
+                "category": "Host access",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-011",
+              "name": "broad device_cgroup_rules",
+              "shortDescription": {
+                "text": "Broad device cgroup rules detected."
+              },
+              "fullDescription": {
+                "text": "Broad cgroup device rules can grant excessive device access."
+              },
+              "help": {
+                "text": "Narrow device_cgroup_rules to the minimum required."
+              },
+              "properties": {
+                "category": "Host access",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-012",
+              "name": "volumes_from used",
+              "shortDescription": {
+                "text": "volumes_from shares another container filesystem."
+              },
+              "fullDescription": {
+                "text": "Inherited volumes may unexpectedly share sensitive data."
+              },
+              "help": {
+                "text": "Declare explicit volumes instead of volumes_from."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-013",
+              "name": "legacy links or external_links",
+              "shortDescription": {
+                "text": "Service uses links or external_links."
+              },
+              "fullDescription": {
+                "text": "Legacy linking is obsolete and complicates network trust boundaries."
+              },
+              "help": {
+                "text": "Use user-defined networks and service DNS names."
+              },
+              "properties": {
+                "category": "Networking",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-020",
+              "name": "cap_add ALL",
+              "shortDescription": {
+                "text": "Service adds ALL capabilities."
+              },
+              "fullDescription": {
+                "text": "Adding ALL capabilities largely defeats capability-based least privilege."
+              },
+              "help": {
+                "text": "Remove cap_add ALL; add only required capabilities."
+              },
+              "properties": {
+                "category": "Capabilities",
+                "severity": "Critical",
+                "security-severity": "critical"
+              }
+            },
+            {
+              "id": "CSB-CMP-021",
+              "name": "dangerous capabilities added",
+              "shortDescription": {
+                "text": "Dangerous Linux capabilities are added."
+              },
+              "fullDescription": {
+                "text": "Dangerous capabilities can enable privilege escalation or host interaction."
+              },
+              "help": {
+                "text": "Drop ALL and add only justified capabilities."
+              },
+              "properties": {
+                "category": "Capabilities",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-022",
+              "name": "cap_drop missing",
+              "shortDescription": {
+                "text": "No cap_drop configured."
+              },
+              "fullDescription": {
+                "text": "Without dropping capabilities, the default set may be broader than needed."
+              },
+              "help": {
+                "text": "Add cap_drop: [ALL] and re-add only required capabilities."
+              },
+              "properties": {
+                "category": "Capabilities",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-023",
+              "name": "cap_drop does not include ALL",
+              "shortDescription": {
+                "text": "cap_drop is present but does not drop ALL."
+              },
+              "fullDescription": {
+                "text": "Partial drops may leave dangerous capabilities."
+              },
+              "help": {
+                "text": "Prefer cap_drop: [ALL]."
+              },
+              "properties": {
+                "category": "Capabilities",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-024",
+              "name": "seccomp unconfined",
+              "shortDescription": {
+                "text": "security_opt disables seccomp (seccomp=unconfined)."
+              },
+              "fullDescription": {
+                "text": "Disabling seccomp removes an important syscall filter."
+              },
+              "help": {
+                "text": "Remove seccomp=unconfined; use default or a tailored profile."
+              },
+              "properties": {
+                "category": "Capabilities",
+                "severity": "Critical",
+                "security-severity": "critical"
+              }
+            },
+            {
+              "id": "CSB-CMP-025",
+              "name": "AppArmor unconfined",
+              "shortDescription": {
+                "text": "AppArmor is explicitly unconfined."
+              },
+              "fullDescription": {
+                "text": "Disabling AppArmor reduces mandatory access controls where available."
+              },
+              "help": {
+                "text": "Remove apparmor:unconfined."
+              },
+              "properties": {
+                "category": "Capabilities",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-026",
+              "name": "no-new-privileges missing",
+              "shortDescription": {
+                "text": "no-new-privileges is not enabled."
+              },
+              "fullDescription": {
+                "text": "Without no-new-privileges, setuid binaries may escalate privileges."
+              },
+              "help": {
+                "text": "Add security_opt: [no-new-privileges:true]."
+              },
+              "properties": {
+                "category": "Capabilities",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-027",
+              "name": "unsafe proc/sys mounts or sysctls",
+              "shortDescription": {
+                "text": "Writable proc/sys related mounts or unsafe sysctls detected."
+              },
+              "fullDescription": {
+                "text": "Unsafe sysctls/mounts can affect host kernel behavior."
+              },
+              "help": {
+                "text": "Remove unsafe sysctls and writable /proc|/sys mounts."
+              },
+              "properties": {
+                "category": "Capabilities",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-028",
+              "name": "unsafe sysctl values",
+              "shortDescription": {
+                "text": "Sysctl values outside a conservative allowlist."
+              },
+              "fullDescription": {
+                "text": "Non-default sysctls may weaken isolation; not all are insecure."
+              },
+              "help": {
+                "text": "Review sysctls against an allowlist; remove unnecessary entries."
+              },
+              "properties": {
+                "category": "Capabilities",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-030",
+              "name": "no explicit service user",
+              "shortDescription": {
+                "text": "Service does not set user."
+              },
+              "fullDescription": {
+                "text": "Containers often default to root inside the image user context."
+              },
+              "help": {
+                "text": "Set an explicit non-root user."
+              },
+              "properties": {
+                "category": "Identity",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-031",
+              "name": "explicit root user",
+              "shortDescription": {
+                "text": "Service explicitly runs as root (user root or UID 0)."
+              },
+              "fullDescription": {
+                "text": "Root inside the container increases impact of compromise."
+              },
+              "help": {
+                "text": "Run as a non-root UID/GID."
+              },
+              "properties": {
+                "category": "Identity",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-032",
+              "name": "privileged supplementary groups",
+              "shortDescription": {
+                "text": "group_add includes privileged/docker-like groups."
+              },
+              "fullDescription": {
+                "text": "Supplementary privileged groups may grant host-equivalent access."
+              },
+              "help": {
+                "text": "Remove privileged groups from group_add."
+              },
+              "properties": {
+                "category": "Identity",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-033",
+              "name": "credential dirs writable for root container",
+              "shortDescription": {
+                "text": "Writable home/credential mounts available to a root container."
+              },
+              "fullDescription": {
+                "text": "Root plus writable credential mounts enables credential theft/modification."
+              },
+              "help": {
+                "text": "Use read-only mounts and non-root users."
+              },
+              "properties": {
+                "category": "Identity",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-040",
+              "name": "read_only not enabled",
+              "shortDescription": {
+                "text": "read_only root filesystem is not enabled."
+              },
+              "fullDescription": {
+                "text": "Writable rootfs increases persistence options after compromise."
+              },
+              "help": {
+                "text": "Set read_only: true and use tmpfs/volumes for writable paths."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-041",
+              "name": "writable root filesystem undocumented",
+              "shortDescription": {
+                "text": "Writable root filesystem without documented need."
+              },
+              "fullDescription": {
+                "text": "Writable rootfs may be unnecessary for many services."
+              },
+              "help": {
+                "text": "Enable read_only when application-compatible."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-042",
+              "name": "tmpfs advisory with read_only",
+              "shortDescription": {
+                "text": "read_only enabled; ensure tmpfs covers required writable paths."
+              },
+              "fullDescription": {
+                "text": "Missing tmpfs may break apps or push writes to volumes unexpectedly."
+              },
+              "help": {
+                "text": "Add explicit tmpfs for known writable runtime paths; do not invent paths."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-043",
+              "name": "bind mount parent traversal",
+              "shortDescription": {
+                "text": "Bind mount source uses parent directory traversal."
+              },
+              "fullDescription": {
+                "text": "Traversal can escape intended project directories."
+              },
+              "help": {
+                "text": "Use paths within the project root only."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-044",
+              "name": "absolute host bind path",
+              "shortDescription": {
+                "text": "Absolute host bind path used."
+              },
+              "fullDescription": {
+                "text": "Absolute binds couple config to host layout and may expose sensitive paths."
+              },
+              "help": {
+                "text": "Prefer named volumes or project-relative binds when possible."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-045",
+              "name": "bind source outside project root",
+              "shortDescription": {
+                "text": "Bind source appears outside the project root."
+              },
+              "fullDescription": {
+                "text": "Out-of-tree binds expand the trust boundary."
+              },
+              "help": {
+                "text": "Keep binds within the analyzed project root."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-046",
+              "name": "ambiguous short volume syntax",
+              "shortDescription": {
+                "text": "Short volume syntax is ambiguous for analysis/patching."
+              },
+              "fullDescription": {
+                "text": "Ambiguity increases review and remediation risk."
+              },
+              "help": {
+                "text": "Prefer long syntax with explicit type/source/target/read_only."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-047",
+              "name": "volume mode missing",
+              "shortDescription": {
+                "text": "Volume mode/read_only not specified."
+              },
+              "fullDescription": {
+                "text": "Default may be writable; not always wrong for data volumes."
+              },
+              "help": {
+                "text": "Set read_only explicitly when write access is unnecessary."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-050",
+              "name": "secret-like environment literal",
+              "shortDescription": {
+                "text": "Likely secret embedded directly in environment."
+              },
+              "fullDescription": {
+                "text": "Hard-coded secrets in Compose are frequently leaked via VCS and reports."
+              },
+              "help": {
+                "text": "Use Compose secrets or an external secret manager; remove literals."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "Critical",
+                "security-severity": "critical"
+              }
+            },
+            {
+              "id": "CSB-CMP-051",
+              "name": "high-entropy credential literal",
+              "shortDescription": {
+                "text": "Likely high-entropy credential literal detected."
+              },
+              "fullDescription": {
+                "text": "High-entropy literals often indicate tokens or keys."
+              },
+              "help": {
+                "text": "Remove literals; inject secrets at runtime via a secret store."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-052",
+              "name": "secret in command/entrypoint",
+              "shortDescription": {
+                "text": "Secret-like material appears in command or entrypoint."
+              },
+              "fullDescription": {
+                "text": "Process arguments are widely visible in process listings."
+              },
+              "help": {
+                "text": "Pass secrets via files/env from a secret store, not argv."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-053",
+              "name": "secret in labels",
+              "shortDescription": {
+                "text": "Secret-like material appears in labels."
+              },
+              "fullDescription": {
+                "text": "Labels are often exposed via inspect APIs and orchestration UIs."
+              },
+              "help": {
+                "text": "Do not store secrets in labels."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-054",
+              "name": "secret in build args",
+              "shortDescription": {
+                "text": "Secret-like build args detected."
+              },
+              "fullDescription": {
+                "text": "Build args may persist in image history/cache metadata."
+              },
+              "help": {
+                "text": "Use BuildKit secret mounts instead of ARG for secrets."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-055",
+              "name": "env_file reference",
+              "shortDescription": {
+                "text": "env_file is referenced but not read by this analyzer."
+              },
+              "fullDescription": {
+                "text": "File contents are outside verified scope and may contain secrets."
+              },
+              "help": {
+                "text": "Ensure env_file is not committed; prefer secrets. Content was not read."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-056",
+              "name": "secret-like path as volume",
+              "shortDescription": {
+                "text": "Secret-like host path mounted as a normal volume."
+              },
+              "fullDescription": {
+                "text": "Ordinary volumes lack Compose secret semantics and may be overly writable."
+              },
+              "help": {
+                "text": "Use top-level secrets with explicit service grants."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-057",
+              "name": "top-level secret unused",
+              "shortDescription": {
+                "text": "Top-level secret declared but not granted to any service."
+              },
+              "fullDescription": {
+                "text": "Unused secrets add complexity; may indicate misconfiguration."
+              },
+              "help": {
+                "text": "Grant to required services or remove unused secret declarations."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-058",
+              "name": "service secret policy expectation",
+              "shortDescription": {
+                "text": "Service secret grant differs from explicit policy expectations."
+              },
+              "fullDescription": {
+                "text": "Only evaluated when policy declares expectations."
+              },
+              "help": {
+                "text": "Align service secrets with policy allowlists."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-059",
+              "name": "unsafe secret source path",
+              "shortDescription": {
+                "text": "Secret source path is absolute, traversing, or outside project root."
+              },
+              "fullDescription": {
+                "text": "Unsafe secret paths expand trust boundaries."
+              },
+              "help": {
+                "text": "Use project-relative secret files that are not tracked in VCS."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-060",
+              "name": "insecure interpolation default",
+              "shortDescription": {
+                "text": "Interpolation default looks like an insecure secret placeholder/literal."
+              },
+              "fullDescription": {
+                "text": "Insecure defaults may become effective credentials."
+              },
+              "help": {
+                "text": "Remove secret defaults; fail closed if unset."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-070",
+              "name": "port published on all interfaces",
+              "shortDescription": {
+                "text": "Port published on wildcard interfaces (0.0.0.0/::)."
+              },
+              "fullDescription": {
+                "text": "Wildcard binds may expose services beyond intended hosts."
+              },
+              "help": {
+                "text": "Bind to 127.0.0.1 or a specific interface when possible."
+              },
+              "properties": {
+                "category": "Networking",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-071",
+              "name": "sensitive port published",
+              "shortDescription": {
+                "text": "Sensitive management/database port published."
+              },
+              "fullDescription": {
+                "text": "Publishing admin/DB ports increases remote attack surface."
+              },
+              "help": {
+                "text": "Do not publish sensitive ports; use internal networks or localhost binds."
+              },
+              "properties": {
+                "category": "Networking",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-072",
+              "name": "host network with ports/privileges",
+              "shortDescription": {
+                "text": "Host networking combined with published ports or broad privileges."
+              },
+              "fullDescription": {
+                "text": "Combined exposures compound isolation failure."
+              },
+              "help": {
+                "text": "Remove host networking and excess privileges."
+              },
+              "properties": {
+                "category": "Networking",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-073",
+              "name": "backend network not internal",
+              "shortDescription": {
+                "text": "Backend network not marked internal (policy advisory)."
+              },
+              "fullDescription": {
+                "text": "Non-internal networks may route more broadly than intended."
+              },
+              "help": {
+                "text": "Mark backend networks as internal: true when appropriate."
+              },
+              "properties": {
+                "category": "Networking",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-074",
+              "name": "service attached to all networks",
+              "shortDescription": {
+                "text": "Service attached to every declared network against policy expectations."
+              },
+              "fullDescription": {
+                "text": "Over-attachment widens lateral movement paths."
+              },
+              "help": {
+                "text": "Attach services only to required networks."
+              },
+              "properties": {
+                "category": "Networking",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-075",
+              "name": "extra_hosts host-gateway",
+              "shortDescription": {
+                "text": "extra_hosts maps host-gateway."
+              },
+              "fullDescription": {
+                "text": "Host gateway mappings can simplify host access from containers."
+              },
+              "help": {
+                "text": "Avoid unless required; document justification."
+              },
+              "properties": {
+                "category": "Networking",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-076",
+              "name": "static public DNS",
+              "shortDescription": {
+                "text": "Static public DNS configuration detected."
+              },
+              "fullDescription": {
+                "text": "Not automatically insecure; may affect resolution trust."
+              },
+              "help": {
+                "text": "Prefer organizational DNS policy where applicable."
+              },
+              "properties": {
+                "category": "Networking",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-077",
+              "name": "static mac/addressing",
+              "shortDescription": {
+                "text": "Static MAC or addressing reduces portability/privacy."
+              },
+              "fullDescription": {
+                "text": "Static identifiers can complicate operations and tracking posture."
+              },
+              "help": {
+                "text": "Prefer dynamic addressing unless required."
+              },
+              "properties": {
+                "category": "Networking",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-080",
+              "name": "no memory limit",
+              "shortDescription": {
+                "text": "No memory limit configured."
+              },
+              "fullDescription": {
+                "text": "Unbounded memory can enable noisy-neighbor DoS on the host."
+              },
+              "help": {
+                "text": "Set mem_limit or deploy.resources.limits.memory."
+              },
+              "properties": {
+                "category": "Resources",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-081",
+              "name": "no CPU limit",
+              "shortDescription": {
+                "text": "No CPU limit configured."
+              },
+              "fullDescription": {
+                "text": "Unbounded CPU can starve co-located workloads."
+              },
+              "help": {
+                "text": "Set cpus or deploy CPU limits."
+              },
+              "properties": {
+                "category": "Resources",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-082",
+              "name": "no PID limit",
+              "shortDescription": {
+                "text": "No PID limit configured."
+              },
+              "fullDescription": {
+                "text": "Fork bombs can exhaust host process table."
+              },
+              "help": {
+                "text": "Set pids_limit or deploy pids limits."
+              },
+              "properties": {
+                "category": "Resources",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-083",
+              "name": "PID limit disabled/unlimited",
+              "shortDescription": {
+                "text": "PID limit explicitly disabled or unlimited."
+              },
+              "fullDescription": {
+                "text": "Unlimited PIDs remove a key DoS control."
+              },
+              "help": {
+                "text": "Set a finite pids_limit."
+              },
+              "properties": {
+                "category": "Resources",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-084",
+              "name": "inconsistent resource limits",
+              "shortDescription": {
+                "text": "Service-level and deploy-level resource limits appear inconsistent."
+              },
+              "fullDescription": {
+                "text": "Inconsistency causes operator confusion about effective limits."
+              },
+              "help": {
+                "text": "Define limits in one place consistently."
+              },
+              "properties": {
+                "category": "Resources",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-085",
+              "name": "no healthcheck",
+              "shortDescription": {
+                "text": "No healthcheck defined for a long-running service."
+              },
+              "fullDescription": {
+                "text": "Without healthchecks, unhealthy instances may keep receiving traffic."
+              },
+              "help": {
+                "text": "Add a HEALTHCHECK-compatible Compose healthcheck."
+              },
+              "properties": {
+                "category": "Reliability",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-086",
+              "name": "healthcheck disabled",
+              "shortDescription": {
+                "text": "Healthcheck explicitly disabled."
+              },
+              "fullDescription": {
+                "text": "Disabled healthchecks reduce failure detection."
+              },
+              "help": {
+                "text": "Enable a meaningful healthcheck when applicable."
+              },
+              "properties": {
+                "category": "Reliability",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-087",
+              "name": "healthcheck secret exposure",
+              "shortDescription": {
+                "text": "Healthcheck command appears to include secret-like material."
+              },
+              "fullDescription": {
+                "text": "Healthcheck commands may appear in inspect output."
+              },
+              "help": {
+                "text": "Do not embed secrets in healthcheck commands."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-088",
+              "name": "depends_on service_started vs healthy",
+              "shortDescription": {
+                "text": "Dependency uses service_started while dependency defines healthcheck."
+              },
+              "fullDescription": {
+                "text": "service_healthy may be operationally safer."
+              },
+              "help": {
+                "text": "Consider condition: service_healthy when appropriate."
+              },
+              "properties": {
+                "category": "Reliability",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-089",
+              "name": "restart policy absent",
+              "shortDescription": {
+                "text": "Restart policy absent."
+              },
+              "fullDescription": {
+                "text": "Missing restart policy may affect availability expectations."
+              },
+              "help": {
+                "text": "Set an explicit restart policy appropriate to the workload."
+              },
+              "properties": {
+                "category": "Reliability",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-090",
+              "name": "unbounded restart behavior",
+              "shortDescription": {
+                "text": "Restart policy may restart without useful bounds."
+              },
+              "fullDescription": {
+                "text": "Tight restart loops can amplify failure modes."
+              },
+              "help": {
+                "text": "Use on-failure with max retries where appropriate."
+              },
+              "properties": {
+                "category": "Reliability",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-091",
+              "name": "stop_grace_period advisory",
+              "shortDescription": {
+                "text": "No stop_grace_period for policy-identified stateful services."
+              },
+              "fullDescription": {
+                "text": "Abrupt stops may risk data integrity for stateful workloads."
+              },
+              "help": {
+                "text": "Set stop_grace_period when policy marks the service stateful."
+              },
+              "properties": {
+                "category": "Reliability",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-100",
+              "name": "logging driver/options absent",
+              "shortDescription": {
+                "text": "Logging driver or options absent."
+              },
+              "fullDescription": {
+                "text": "Defaults may be unbounded on some engines."
+              },
+              "help": {
+                "text": "Configure logging with size/file rotation."
+              },
+              "properties": {
+                "category": "Logging",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-101",
+              "name": "json-file without max-size",
+              "shortDescription": {
+                "text": "json-file logging without max-size."
+              },
+              "fullDescription": {
+                "text": "Unbounded logs can fill disks."
+              },
+              "help": {
+                "text": "Set max-size for json-file driver."
+              },
+              "properties": {
+                "category": "Logging",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-102",
+              "name": "json-file without max-file",
+              "shortDescription": {
+                "text": "json-file logging without max-file."
+              },
+              "fullDescription": {
+                "text": "Unbounded log file counts can fill disks."
+              },
+              "help": {
+                "text": "Set max-file for json-file driver."
+              },
+              "properties": {
+                "category": "Logging",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-103",
+              "name": "logging disabled",
+              "shortDescription": {
+                "text": "Logging appears disabled."
+              },
+              "fullDescription": {
+                "text": "May be intentional; reduces forensic visibility."
+              },
+              "help": {
+                "text": "Ensure alternate audit/logging exists if disabled."
+              },
+              "properties": {
+                "category": "Logging",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-104",
+              "name": "remote logging target",
+              "shortDescription": {
+                "text": "Logging target appears remote/external."
+              },
+              "fullDescription": {
+                "text": "Remote logging has privacy and trust implications; no network call was made."
+              },
+              "help": {
+                "text": "Review destination trust and data minimization."
+              },
+              "properties": {
+                "category": "Logging",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-110",
+              "name": "image uses latest tag",
+              "shortDescription": {
+                "text": "Image reference uses the latest tag."
+              },
+              "fullDescription": {
+                "text": "latest is moving and reduces reproducibility."
+              },
+              "help": {
+                "text": "Pin to a specific version tag or digest."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-111",
+              "name": "image has no explicit tag",
+              "shortDescription": {
+                "text": "Image reference has no explicit tag (implicit latest)."
+              },
+              "fullDescription": {
+                "text": "Implicit latest is non-deterministic."
+              },
+              "help": {
+                "text": "Specify an explicit tag or digest."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-112",
+              "name": "image not digest-pinned",
+              "shortDescription": {
+                "text": "Image is not pinned by digest."
+              },
+              "fullDescription": {
+                "text": "Tags can move; digests improve reproducibility but still require updates."
+              },
+              "help": {
+                "text": "Pin by digest when policy requires."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-113",
+              "name": "HTTP registry reference",
+              "shortDescription": {
+                "text": "Image reference uses unencrypted HTTP registry URL."
+              },
+              "fullDescription": {
+                "text": "HTTP registries are susceptible to tampering in transit."
+              },
+              "help": {
+                "text": "Use HTTPS registries only."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-114",
+              "name": "credentials in image reference",
+              "shortDescription": {
+                "text": "Image reference contains embedded credentials."
+              },
+              "fullDescription": {
+                "text": "Credentials in image refs are easily leaked."
+              },
+              "help": {
+                "text": "Remove embedded credentials; authenticate via secure credential helpers."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "Critical",
+                "security-severity": "critical"
+              }
+            },
+            {
+              "id": "CSB-CMP-115",
+              "name": "interpolation-only image reference",
+              "shortDescription": {
+                "text": "Image reference is interpolation-only and cannot be evaluated."
+              },
+              "fullDescription": {
+                "text": "Static analysis cannot assess tag/digest posture."
+              },
+              "help": {
+                "text": "Ensure resolved values are pinned in the deployment pipeline."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-120",
+              "name": "broad build context",
+              "shortDescription": {
+                "text": "Build context is broad (e.g. . or repository root)."
+              },
+              "fullDescription": {
+                "text": "Broad contexts increase risk of leaking sensitive files into build."
+              },
+              "help": {
+                "text": "Narrow context and maintain a strong .dockerignore."
+              },
+              "properties": {
+                "category": "Build security",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-CMP-121",
+              "name": "build context parent traversal",
+              "shortDescription": {
+                "text": "Build context uses parent traversal."
+              },
+              "fullDescription": {
+                "text": "Parent contexts can include unintended sensitive files."
+              },
+              "help": {
+                "text": "Keep build context within the project."
+              },
+              "properties": {
+                "category": "Build security",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-122",
+              "name": "absolute build context",
+              "shortDescription": {
+                "text": "Build context is an absolute path."
+              },
+              "fullDescription": {
+                "text": "Absolute contexts reduce portability and may escape intended trees."
+              },
+              "help": {
+                "text": "Use relative contexts under the project root."
+              },
+              "properties": {
+                "category": "Build security",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-123",
+              "name": "dockerfile path escapes context",
+              "shortDescription": {
+                "text": "Dockerfile path appears to escape the build context."
+              },
+              "fullDescription": {
+                "text": "Escaping context can pull unexpected Dockerfiles."
+              },
+              "help": {
+                "text": "Keep Dockerfile paths within the build context."
+              },
+              "properties": {
+                "category": "Build security",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-124",
+              "name": "secret-like build args",
+              "shortDescription": {
+                "text": "Build args contain secret-like names or literals."
+              },
+              "fullDescription": {
+                "text": "Secrets in build args may persist in history/cache."
+              },
+              "help": {
+                "text": "Use BuildKit secrets; never pass secret literals via args."
+              },
+              "properties": {
+                "category": "Build security",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-125",
+              "name": "privileged/insecure build entitlement",
+              "shortDescription": {
+                "text": "Build privileged or insecure entitlement represented."
+              },
+              "fullDescription": {
+                "text": "Privileged builds expand host attack surface during build."
+              },
+              "help": {
+                "text": "Avoid privileged builds."
+              },
+              "properties": {
+                "category": "Build security",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-CMP-126",
+              "name": "build SSH forwarding",
+              "shortDescription": {
+                "text": "Build SSH forwarding configured."
+              },
+              "fullDescription": {
+                "text": "SSH forwarding can expose agent keys to build steps."
+              },
+              "help": {
+                "text": "Prefer short-lived tokens or BuildKit secrets."
+              },
+              "properties": {
+                "category": "Build security",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-127",
+              "name": "build secrets absent with secret-like args",
+              "shortDescription": {
+                "text": "Secret-like build args present without build secrets."
+              },
+              "fullDescription": {
+                "text": "Indicates secrets may be handled via ARG instead of secret mounts."
+              },
+              "help": {
+                "text": "Migrate to BuildKit secret mounts."
+              },
+              "properties": {
+                "category": "Build security",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-130",
+              "name": "include used",
+              "shortDescription": {
+                "text": "Compose include is used and was not followed."
+              },
+              "fullDescription": {
+                "text": "Included files expand the trust boundary beyond analyzed content."
+              },
+              "help": {
+                "text": "Review included files separately; supply them explicitly if they must be analyzed."
+              },
+              "properties": {
+                "category": "Configuration trust",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-131",
+              "name": "extends.file used",
+              "shortDescription": {
+                "text": "extends.file is used and was not read."
+              },
+              "fullDescription": {
+                "text": "Extended files may introduce privileges/secrets outside this scan."
+              },
+              "help": {
+                "text": "Inline configuration or supply extended files explicitly for analysis."
+              },
+              "properties": {
+                "category": "Configuration trust",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-132",
+              "name": "env_file outside project root",
+              "shortDescription": {
+                "text": "env_file path is absolute or outside project root."
+              },
+              "fullDescription": {
+                "text": "Out-of-tree env files expand trust boundaries."
+              },
+              "help": {
+                "text": "Keep env_file paths project-relative and untracked."
+              },
+              "properties": {
+                "category": "Configuration trust",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-133",
+              "name": "configs.file outside project root",
+              "shortDescription": {
+                "text": "configs.file path is absolute or outside project root."
+              },
+              "fullDescription": {
+                "text": "Out-of-tree configs expand trust boundaries."
+              },
+              "help": {
+                "text": "Use project-relative config files."
+              },
+              "properties": {
+                "category": "Configuration trust",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-134",
+              "name": "secrets.file outside project root",
+              "shortDescription": {
+                "text": "secrets.file path is absolute or outside project root."
+              },
+              "fullDescription": {
+                "text": "Out-of-tree secrets expand trust boundaries."
+              },
+              "help": {
+                "text": "Use project-relative secret files that are not committed."
+              },
+              "properties": {
+                "category": "Configuration trust",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-135",
+              "name": "label_file used",
+              "shortDescription": {
+                "text": "label_file is used and was not read."
+              },
+              "fullDescription": {
+                "text": "Label files may contain sensitive metadata."
+              },
+              "help": {
+                "text": "Avoid secrets in label files; review separately."
+              },
+              "properties": {
+                "category": "Configuration trust",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-136",
+              "name": "credential_spec.file used",
+              "shortDescription": {
+                "text": "credential_spec.file is used and was not read."
+              },
+              "fullDescription": {
+                "text": "Credential specs can grant significant identity privileges."
+              },
+              "help": {
+                "text": "Review credential specs out of band."
+              },
+              "properties": {
+                "category": "Configuration trust",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-CMP-137",
+              "name": "security-related extension fields",
+              "shortDescription": {
+                "text": "Security-related unknown extension fields detected."
+              },
+              "fullDescription": {
+                "text": "Custom extensions may alter security posture outside standard fields."
+              },
+              "help": {
+                "text": "Document and review security-affecting x-* fields."
+              },
+              "properties": {
+                "category": "Configuration trust",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-138",
+              "name": "YAML anchors or merge keys",
+              "shortDescription": {
+                "text": "YAML anchors or merge keys are present."
+              },
+              "fullDescription": {
+                "text": "Anchors complicate review and safe patch generation."
+              },
+              "help": {
+                "text": "Prefer explicit duplication for security-sensitive fields when practical."
+              },
+              "properties": {
+                "category": "Configuration trust",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-CMP-139",
+              "name": "sensitive value via anchors",
+              "shortDescription": {
+                "text": "Potentially sensitive value propagated through anchors."
+              },
+              "fullDescription": {
+                "text": "Anchored secrets can multiply exposure across services."
+              },
+              "help": {
+                "text": "Remove secret literals; use secret stores."
+              },
+              "properties": {
+                "category": "Configuration trust",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-001",
+              "name": "FROM uses latest",
+              "shortDescription": {
+                "text": "FROM uses latest tag."
+              },
+              "fullDescription": {
+                "text": "Moving tags reduce reproducibility."
+              },
+              "help": {
+                "text": "Pin FROM to a version tag or digest."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-002",
+              "name": "FROM has no tag",
+              "shortDescription": {
+                "text": "FROM has no explicit tag."
+              },
+              "fullDescription": {
+                "text": "Implicit latest is non-deterministic."
+              },
+              "help": {
+                "text": "Specify an explicit tag or digest."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-003",
+              "name": "FROM not digest-pinned",
+              "shortDescription": {
+                "text": "FROM is not digest-pinned."
+              },
+              "fullDescription": {
+                "text": "Tags can move."
+              },
+              "help": {
+                "text": "Pin by digest when policy requires."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-DF-004",
+              "name": "FROM scratch",
+              "shortDescription": {
+                "text": "FROM scratch used."
+              },
+              "fullDescription": {
+                "text": "Often desirable for minimal images; not a failure."
+              },
+              "help": {
+                "text": "No action required solely for scratch."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-DF-005",
+              "name": "ARG used in FROM unresolved",
+              "shortDescription": {
+                "text": "FROM uses ARG that cannot be statically resolved."
+              },
+              "fullDescription": {
+                "text": "Base image posture cannot be fully evaluated."
+              },
+              "help": {
+                "text": "Ensure CI pins resolved base images."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-DF-006",
+              "name": "suspicious registry reference",
+              "shortDescription": {
+                "text": "Remote/suspicious registry reference detected syntactically."
+              },
+              "fullDescription": {
+                "text": "No reputation lookup is performed."
+              },
+              "help": {
+                "text": "Use trusted registries and pin digests."
+              },
+              "properties": {
+                "category": "Image provenance",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-010",
+              "name": "no final USER",
+              "shortDescription": {
+                "text": "Final stage has no USER instruction."
+              },
+              "fullDescription": {
+                "text": "Image may run as root by default."
+              },
+              "help": {
+                "text": "Add a non-root USER in the final stage."
+              },
+              "properties": {
+                "category": "Identity",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-011",
+              "name": "final USER is root",
+              "shortDescription": {
+                "text": "Final USER is root or UID 0."
+              },
+              "fullDescription": {
+                "text": "Root runtime increases compromise impact."
+              },
+              "help": {
+                "text": "Switch to a non-root user before ENTRYPOINT/CMD."
+              },
+              "properties": {
+                "category": "Identity",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-012",
+              "name": "USER switched back to root",
+              "shortDescription": {
+                "text": "USER changes back to root in the final stage."
+              },
+              "fullDescription": {
+                "text": "Reintroducing root late in the stage increases risk."
+              },
+              "help": {
+                "text": "Keep final runtime user non-root."
+              },
+              "properties": {
+                "category": "Identity",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-013",
+              "name": "numeric non-root USER",
+              "shortDescription": {
+                "text": "Numeric non-root USER without ownership documentation."
+              },
+              "fullDescription": {
+                "text": "Not necessarily insecure; ownership must match copied files."
+              },
+              "help": {
+                "text": "Ensure filesystem ownership matches the numeric UID."
+              },
+              "properties": {
+                "category": "Identity",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-DF-020",
+              "name": "secret-like ENV",
+              "shortDescription": {
+                "text": "ENV contains secret-like key."
+              },
+              "fullDescription": {
+                "text": "ENV values persist in image config."
+              },
+              "help": {
+                "text": "Do not put secrets in ENV; inject at runtime."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "Critical",
+                "security-severity": "critical"
+              }
+            },
+            {
+              "id": "CSB-DF-021",
+              "name": "secret-like ARG",
+              "shortDescription": {
+                "text": "ARG contains secret-like key."
+              },
+              "fullDescription": {
+                "text": "ARG may persist in history/cache metadata."
+              },
+              "help": {
+                "text": "Use BuildKit secret mounts."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-022",
+              "name": "secret literal in instructions",
+              "shortDescription": {
+                "text": "Likely secret literal in ENV/ARG/RUN/CMD/ENTRYPOINT."
+              },
+              "fullDescription": {
+                "text": "Secrets in layers/config are difficult to eradicate."
+              },
+              "help": {
+                "text": "Remove literals; rotate any exposed credentials."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "Critical",
+                "security-severity": "critical"
+              }
+            },
+            {
+              "id": "CSB-DF-023",
+              "name": "COPY/ADD sensitive credential files",
+              "shortDescription": {
+                "text": "COPY/ADD appears to include private keys or credential files."
+              },
+              "fullDescription": {
+                "text": "Credential files in images are frequently exfiltrated."
+              },
+              "help": {
+                "text": "Do not copy secrets into images."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "Critical",
+                "security-severity": "critical"
+              }
+            },
+            {
+              "id": "CSB-DF-024",
+              "name": "secret via ARG instead of BuildKit",
+              "shortDescription": {
+                "text": "Build secret passed through ARG instead of BuildKit secret mount."
+              },
+              "fullDescription": {
+                "text": "ARG secrets leak via history."
+              },
+              "help": {
+                "text": "Use RUN --mount=type=secret."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-025",
+              "name": "secret removed in later layer",
+              "shortDescription": {
+                "text": "Secret-like value introduced then removed in a later layer."
+              },
+              "fullDescription": {
+                "text": "Layer history may still preserve secret material."
+              },
+              "help": {
+                "text": "Never introduce secrets into layers; use multi-stage and secret mounts."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-030",
+              "name": "remote ADD URL",
+              "shortDescription": {
+                "text": "ADD fetches a remote URL."
+              },
+              "fullDescription": {
+                "text": "Remote ADD expands supply-chain trust to an HTTP(S) resource."
+              },
+              "help": {
+                "text": "Prefer COPY of verified local artifacts."
+              },
+              "properties": {
+                "category": "Supply chain",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-031",
+              "name": "ADD where COPY clearer",
+              "shortDescription": {
+                "text": "ADD used where COPY would be clearer."
+              },
+              "fullDescription": {
+                "text": "ADD has extra magic (URLs/archives) that can surprise operators."
+              },
+              "help": {
+                "text": "Use COPY unless archive auto-extract is required."
+              },
+              "properties": {
+                "category": "Supply chain",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-DF-032",
+              "name": "curl/wget piped to shell",
+              "shortDescription": {
+                "text": "curl or wget piped directly to a shell."
+              },
+              "fullDescription": {
+                "text": "Pipe-to-shell installs are a common supply-chain hazard."
+              },
+              "help": {
+                "text": "Download, verify checksum/signature, then install."
+              },
+              "properties": {
+                "category": "Supply chain",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-033",
+              "name": "download without checksum",
+              "shortDescription": {
+                "text": "Downloaded artifact lacks visible checksum verification nearby."
+              },
+              "fullDescription": {
+                "text": "Unverified downloads may be tampered with."
+              },
+              "help": {
+                "text": "Verify checksums/signatures in the same layer."
+              },
+              "properties": {
+                "category": "Supply chain",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-034",
+              "name": "package verification disabled",
+              "shortDescription": {
+                "text": "Package repository key/certificate verification disabled."
+              },
+              "fullDescription": {
+                "text": "Disabled verification enables package tampering."
+              },
+              "help": {
+                "text": "Do not disable repo verification."
+              },
+              "properties": {
+                "category": "Supply chain",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-035",
+              "name": "TLS verification disabled",
+              "shortDescription": {
+                "text": "TLS verification explicitly disabled."
+              },
+              "fullDescription": {
+                "text": "Disabling TLS verification enables MITM."
+              },
+              "help": {
+                "text": "Keep TLS verification enabled."
+              },
+              "properties": {
+                "category": "Supply chain",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-036",
+              "name": "git clone unpinned",
+              "shortDescription": {
+                "text": "git clone without pinned commit/tag."
+              },
+              "fullDescription": {
+                "text": "Unpinned clones are non-reproducible."
+              },
+              "help": {
+                "text": "Clone a pinned commit SHA."
+              },
+              "properties": {
+                "category": "Supply chain",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-040",
+              "name": "apt-get update separated",
+              "shortDescription": {
+                "text": "apt-get update separated from install."
+              },
+              "fullDescription": {
+                "text": "Separated update can cause stale index issues and larger layers."
+              },
+              "help": {
+                "text": "Combine update and install in one RUN."
+              },
+              "properties": {
+                "category": "Package management",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-DF-041",
+              "name": "apt missing no-install-recommends",
+              "shortDescription": {
+                "text": "apt-get install lacks --no-install-recommends."
+              },
+              "fullDescription": {
+                "text": "Recommends inflate image size and attack surface."
+              },
+              "help": {
+                "text": "Add --no-install-recommends."
+              },
+              "properties": {
+                "category": "Package management",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-DF-042",
+              "name": "package cache not cleaned",
+              "shortDescription": {
+                "text": "Package manager cache not removed in the same layer."
+              },
+              "fullDescription": {
+                "text": "Leftover caches increase image size."
+              },
+              "help": {
+                "text": "Clean caches in the same RUN."
+              },
+              "properties": {
+                "category": "Package management",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-DF-043",
+              "name": "unbounded system upgrade",
+              "shortDescription": {
+                "text": "Unbounded system upgrade detected."
+              },
+              "fullDescription": {
+                "text": "Unpinned upgrades reduce reproducibility."
+              },
+              "help": {
+                "text": "Install pinned packages instead of broad upgrades."
+              },
+              "properties": {
+                "category": "Package management",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-044",
+              "name": "packages without version pins",
+              "shortDescription": {
+                "text": "Packages installed without version constraints."
+              },
+              "fullDescription": {
+                "text": "Unpinned packages drift over time."
+              },
+              "help": {
+                "text": "Pin versions when policy requires."
+              },
+              "properties": {
+                "category": "Package management",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-DF-045",
+              "name": "apk missing --no-cache",
+              "shortDescription": {
+                "text": "apk add lacks --no-cache."
+              },
+              "fullDescription": {
+                "text": "Cache may persist unless cleaned."
+              },
+              "help": {
+                "text": "Use apk add --no-cache."
+              },
+              "properties": {
+                "category": "Package management",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-DF-046",
+              "name": "debug tools in final stage",
+              "shortDescription": {
+                "text": "Debugging/admin tools installed in final stage."
+              },
+              "fullDescription": {
+                "text": "Extra tools enlarge attack surface."
+              },
+              "help": {
+                "text": "Keep debug tools in builder stages only."
+              },
+              "properties": {
+                "category": "Package management",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-050",
+              "name": "chmod 777",
+              "shortDescription": {
+                "text": "chmod 777 or equivalent broad writable permission."
+              },
+              "fullDescription": {
+                "text": "World-writable permissions enable easy tampering."
+              },
+              "help": {
+                "text": "Use least privilege modes (e.g. 750/640)."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-051",
+              "name": "recursive chmod/chown broad paths",
+              "shortDescription": {
+                "text": "Recursive chmod/chown on broad filesystem paths."
+              },
+              "fullDescription": {
+                "text": "Broad recursive ownership changes are error-prone and risky."
+              },
+              "help": {
+                "text": "Limit recursion to application directories."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-052",
+              "name": "COPY --chown absent",
+              "shortDescription": {
+                "text": "COPY --chown absent while non-root runtime may need ownership."
+              },
+              "fullDescription": {
+                "text": "Ownership mismatches can force root or break the app."
+              },
+              "help": {
+                "text": "Use COPY --chown when appropriate."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-DF-053",
+              "name": "WORKDIR absent",
+              "shortDescription": {
+                "text": "WORKDIR is absent."
+              },
+              "fullDescription": {
+                "text": "Default WORKDIR may be /."
+              },
+              "help": {
+                "text": "Set an explicit application WORKDIR."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-DF-054",
+              "name": "WORKDIR sensitive path",
+              "shortDescription": {
+                "text": "WORKDIR is root or a sensitive absolute directory."
+              },
+              "fullDescription": {
+                "text": "Sensitive workdirs increase accidental write risk."
+              },
+              "help": {
+                "text": "Use an application-specific directory."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-055",
+              "name": "VOLUME sensitive path",
+              "shortDescription": {
+                "text": "VOLUME declares a sensitive host-like path."
+              },
+              "fullDescription": {
+                "text": "VOLUME is not a host bind; still review path choices."
+              },
+              "help": {
+                "text": "Use application data paths for VOLUME."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-DF-056",
+              "name": "build artifacts in final stage",
+              "shortDescription": {
+                "text": "Temporary build artifacts may remain in final stage."
+              },
+              "fullDescription": {
+                "text": "Leftover toolchains increase size and surface."
+              },
+              "help": {
+                "text": "Use multi-stage builds and copy only runtime artifacts."
+              },
+              "properties": {
+                "category": "Filesystem",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-DF-060",
+              "name": "shell-form ENTRYPOINT",
+              "shortDescription": {
+                "text": "Shell-form ENTRYPOINT used."
+              },
+              "fullDescription": {
+                "text": "Shell form involves a shell and signal handling quirks."
+              },
+              "help": {
+                "text": "Prefer exec-form ENTRYPOINT JSON arrays."
+              },
+              "properties": {
+                "category": "Process model",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-DF-061",
+              "name": "shell-form CMD",
+              "shortDescription": {
+                "text": "Shell-form CMD used."
+              },
+              "fullDescription": {
+                "text": "Shell form involves a shell and signal handling quirks."
+              },
+              "help": {
+                "text": "Prefer exec-form CMD JSON arrays."
+              },
+              "properties": {
+                "category": "Process model",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-DF-062",
+              "name": "SSH/systemd/supervisor process",
+              "shortDescription": {
+                "text": "ENTRYPOINT/CMD appears to start SSH, systemd, or supervisor."
+              },
+              "fullDescription": {
+                "text": "Extra supervisors expand attack surface; context-dependent."
+              },
+              "help": {
+                "text": "Run a single app process when practical."
+              },
+              "properties": {
+                "category": "Process model",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-063",
+              "name": "no ENTRYPOINT or CMD",
+              "shortDescription": {
+                "text": "No ENTRYPOINT or CMD defined."
+              },
+              "fullDescription": {
+                "text": "Image may rely on runtime command overrides."
+              },
+              "help": {
+                "text": "Define a clear default command when appropriate."
+              },
+              "properties": {
+                "category": "Process model",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            },
+            {
+              "id": "CSB-DF-064",
+              "name": "HEALTHCHECK missing",
+              "shortDescription": {
+                "text": "HEALTHCHECK missing."
+              },
+              "fullDescription": {
+                "text": "Missing healthchecks reduce orchestrator visibility."
+              },
+              "help": {
+                "text": "Add HEALTHCHECK when policy requires."
+              },
+              "properties": {
+                "category": "Process model",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-DF-065",
+              "name": "HEALTHCHECK NONE",
+              "shortDescription": {
+                "text": "HEALTHCHECK NONE disables checks."
+              },
+              "fullDescription": {
+                "text": "Disabled healthchecks reduce failure detection."
+              },
+              "help": {
+                "text": "Provide a real HEALTHCHECK when applicable."
+              },
+              "properties": {
+                "category": "Process model",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-066",
+              "name": "HEALTHCHECK secret fragments",
+              "shortDescription": {
+                "text": "HEALTHCHECK includes secret-like command fragments."
+              },
+              "fullDescription": {
+                "text": "Healthcheck commands may be exposed via inspect."
+              },
+              "help": {
+                "text": "Do not embed secrets in HEALTHCHECK."
+              },
+              "properties": {
+                "category": "Secrets",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-070",
+              "name": "COPY/ADD dot with no dockerignore",
+              "shortDescription": {
+                "text": "COPY/ADD . . without a supplied .dockerignore."
+              },
+              "fullDescription": {
+                "text": "Broad copies risk including secrets and VCS metadata."
+              },
+              "help": {
+                "text": "Provide .dockerignore and copy narrowly."
+              },
+              "properties": {
+                "category": "Build context",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-071",
+              "name": "dockerignore missing in project",
+              "shortDescription": {
+                "text": ".dockerignore missing from analyzed project."
+              },
+              "fullDescription": {
+                "text": "Missing dockerignore increases context leakage risk."
+              },
+              "help": {
+                "text": "Add a .dockerignore excluding secrets and VCS metadata."
+              },
+              "properties": {
+                "category": "Build context",
+                "severity": "Medium",
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "CSB-DF-072",
+              "name": "dockerignore weak exclusions",
+              "shortDescription": {
+                "text": ".dockerignore does not exclude common sensitive files."
+              },
+              "fullDescription": {
+                "text": "Sensitive files may enter build context."
+              },
+              "help": {
+                "text": "Exclude .env, keys, .git, credentials, etc."
+              },
+              "properties": {
+                "category": "Build context",
+                "severity": "Low",
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CSB-DF-073",
+              "name": "parent traversal in COPY/ADD",
+              "shortDescription": {
+                "text": "Dockerfile copies parent traversal paths."
+              },
+              "fullDescription": {
+                "text": "Parent traversal can escape intended context."
+              },
+              "help": {
+                "text": "Do not COPY ../ paths."
+              },
+              "properties": {
+                "category": "Build context",
+                "severity": "High",
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "CSB-DF-074",
+              "name": "broad copy from build stage",
+              "shortDescription": {
+                "text": "Final image copies broad content from a build stage."
+              },
+              "fullDescription": {
+                "text": "Broad copies may include toolchains/secrets from builder."
+              },
+              "help": {
+                "text": "Copy only required runtime artifacts."
+              },
+              "properties": {
+                "category": "Build context",
+                "severity": "Informational",
+                "security-severity": "informational"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CSB-CMP-001",
+          "level": "error",
+          "message": {
+            "text": "Service sets privileged: true."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "f03134df76c14c2c"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Privilege",
+            "evidence_redacted": "services.synthetic-web.privileged=true",
+            "remediation": "Set privileged: false or remove the field.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-001",
+          "level": "error",
+          "message": {
+            "text": "Service sets privileged: true."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "7a071c5062006830"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Privilege",
+            "evidence_redacted": "services.synthetic-api.privileged=true",
+            "remediation": "Set privileged: false or remove the field.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-002",
+          "level": "error",
+          "message": {
+            "text": "A Docker/Podman runtime socket appears to be bind-mounted."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "dc042435e588df74"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Host access",
+            "evidence_redacted": "services.synthetic-web mounts a path matching a runtime socket pattern",
+            "remediation": "Do not mount docker.sock/podman.sock; use least-privilege APIs or socket proxies if required.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-002",
+          "level": "error",
+          "message": {
+            "text": "A Docker/Podman runtime socket appears to be bind-mounted."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "203784fee6e3e95a"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Host access",
+            "evidence_redacted": "services.synthetic-api mounts a path matching a runtime socket pattern",
+            "remediation": "Do not mount docker.sock/podman.sock; use least-privilege APIs or socket proxies if required.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-004",
+          "level": "error",
+          "message": {
+            "text": "Sensitive host path mounted read-write."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "a31b9c55820c5baa"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Host access",
+            "evidence_redacted": "services.synthetic-web mounts sensitive path read-write (target=/var/run/docker.sock)",
+            "remediation": "Prefer read-only mounts or remove the mount; use named volumes for app data.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-004",
+          "level": "error",
+          "message": {
+            "text": "Sensitive host path mounted read-write."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "b17c1f21ad383256"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Host access",
+            "evidence_redacted": "services.synthetic-api mounts sensitive path read-write (target=/var/run/docker.sock)",
+            "remediation": "Prefer read-only mounts or remove the mount; use named volumes for app data.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-006",
+          "level": "error",
+          "message": {
+            "text": "Service uses network_mode: host."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "5bb59edc2cc23061"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Isolation",
+            "evidence_redacted": "services.synthetic-web.network_mode=host",
+            "remediation": "Use bridge/user-defined networks and publish only required ports.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-007",
+          "level": "error",
+          "message": {
+            "text": "Service uses pid: host."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "4ecc557467ad68bf"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Isolation",
+            "evidence_redacted": "services.synthetic-web.pid=host",
+            "remediation": "Remove pid: host unless strictly required and suppressed with justification.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-020",
+          "level": "error",
+          "message": {
+            "text": "Service adds ALL capabilities."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "5bc31ea034110acd"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Capabilities",
+            "evidence_redacted": "services.synthetic-web.cap_add includes ALL",
+            "remediation": "Remove cap_add ALL; add only required capabilities.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-021",
+          "level": "error",
+          "message": {
+            "text": "Dangerous Linux capabilities are added."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "4ff90b2c89747249"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Capabilities",
+            "evidence_redacted": "services.synthetic-api.cap_add includes SYS_ADMIN",
+            "remediation": "Drop ALL and add only justified capabilities.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-021",
+          "level": "error",
+          "message": {
+            "text": "Dangerous Linux capabilities are added."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "4f3fac4922b5bfed"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Capabilities",
+            "evidence_redacted": "services.synthetic-api.cap_add includes NET_ADMIN",
+            "remediation": "Drop ALL and add only justified capabilities.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-022",
+          "level": "note",
+          "message": {
+            "text": "No cap_drop configured."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "739716470cac96f8"
+          },
+          "properties": {
+            "severity": "Informational",
+            "status": "Fail",
+            "category": "Capabilities",
+            "evidence_redacted": "services.synthetic-web.cap_drop is missing",
+            "remediation": "Add cap_drop: [ALL] and re-add only required capabilities.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-022",
+          "level": "note",
+          "message": {
+            "text": "No cap_drop configured."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "3cafbcc6a6a7b3d4"
+          },
+          "properties": {
+            "severity": "Informational",
+            "status": "Fail",
+            "category": "Capabilities",
+            "evidence_redacted": "services.synthetic-api.cap_drop is missing",
+            "remediation": "Add cap_drop: [ALL] and re-add only required capabilities.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-024",
+          "level": "error",
+          "message": {
+            "text": "security_opt disables seccomp (seccomp=unconfined)."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "7bafa564132a4160"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Capabilities",
+            "evidence_redacted": "services.synthetic-web disables seccomp",
+            "remediation": "Remove seccomp=unconfined; use default or a tailored profile.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-026",
+          "level": "warning",
+          "message": {
+            "text": "no-new-privileges is not enabled."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "48dab5cff5ed1b62"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Capabilities",
+            "evidence_redacted": "services.synthetic-web missing no-new-privileges",
+            "remediation": "Add security_opt: [no-new-privileges:true].",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-026",
+          "level": "warning",
+          "message": {
+            "text": "no-new-privileges is not enabled."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "ba31d7d44eaa2e40"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Capabilities",
+            "evidence_redacted": "services.synthetic-api missing no-new-privileges",
+            "remediation": "Add security_opt: [no-new-privileges:true].",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-031",
+          "level": "error",
+          "message": {
+            "text": "Service explicitly runs as root (user root or UID 0)."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "ff529a03c373fbde"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Identity",
+            "evidence_redacted": "services.synthetic-web.user is root/UID 0",
+            "remediation": "Run as a non-root UID/GID.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-031",
+          "level": "error",
+          "message": {
+            "text": "Service explicitly runs as root (user root or UID 0)."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "998b21f02cd22d29"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Identity",
+            "evidence_redacted": "services.synthetic-api.user is root/UID 0",
+            "remediation": "Run as a non-root UID/GID.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-040",
+          "level": "note",
+          "message": {
+            "text": "read_only root filesystem is not enabled."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "ec973b6318ee93fe"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Filesystem",
+            "evidence_redacted": "services.synthetic-web.read_only is not true",
+            "remediation": "Set read_only: true and use tmpfs/volumes for writable paths.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-040",
+          "level": "note",
+          "message": {
+            "text": "read_only root filesystem is not enabled."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "4a2d7e8ea0bfb550"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Filesystem",
+            "evidence_redacted": "services.synthetic-api.read_only is not true",
+            "remediation": "Set read_only: true and use tmpfs/volumes for writable paths.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-041",
+          "level": "note",
+          "message": {
+            "text": "Writable root filesystem without documented need."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "1b21186210cadc93"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Filesystem",
+            "evidence_redacted": "services.synthetic-web.read_only is not true",
+            "remediation": "Enable read_only when application-compatible.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-041",
+          "level": "note",
+          "message": {
+            "text": "Writable root filesystem without documented need."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "f4a31d1aa19af4d3"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Filesystem",
+            "evidence_redacted": "services.synthetic-api.read_only is not true",
+            "remediation": "Enable read_only when application-compatible.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-044",
+          "level": "note",
+          "message": {
+            "text": "Absolute host bind path used."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "514c6a2d83462002"
+          },
+          "properties": {
+            "severity": "Informational",
+            "status": "Fail",
+            "category": "Filesystem",
+            "evidence_redacted": "services.synthetic-web uses absolute host bind path",
+            "remediation": "Prefer named volumes or project-relative binds when possible.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-044",
+          "level": "note",
+          "message": {
+            "text": "Absolute host bind path used."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "6ccb8b491270fac2"
+          },
+          "properties": {
+            "severity": "Informational",
+            "status": "Fail",
+            "category": "Filesystem",
+            "evidence_redacted": "services.synthetic-api uses absolute host bind path",
+            "remediation": "Prefer named volumes or project-relative binds when possible.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-045",
+          "level": "warning",
+          "message": {
+            "text": "Bind source appears outside the project root."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "053bbe65fc0d89d0"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Filesystem",
+            "evidence_redacted": "services.synthetic-web bind source appears outside project root",
+            "remediation": "Keep binds within the analyzed project root.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-045",
+          "level": "warning",
+          "message": {
+            "text": "Bind source appears outside the project root."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "99629dea79c3e414"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Filesystem",
+            "evidence_redacted": "services.synthetic-api bind source appears outside project root",
+            "remediation": "Keep binds within the analyzed project root.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-046",
+          "level": "note",
+          "message": {
+            "text": "Short volume syntax is ambiguous for analysis/patching."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "32d533a45aac635e"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Filesystem",
+            "evidence_redacted": "services.synthetic-web uses ambiguous short volume syntax",
+            "remediation": "Prefer long syntax with explicit type/source/target/read_only.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-047",
+          "level": "note",
+          "message": {
+            "text": "Volume mode/read_only not specified."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "11b6d10d4d1df9d9"
+          },
+          "properties": {
+            "severity": "Informational",
+            "status": "Fail",
+            "category": "Filesystem",
+            "evidence_redacted": "services.synthetic-web volume missing explicit read_only/mode",
+            "remediation": "Set read_only explicitly when write access is unnecessary.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-050",
+          "level": "error",
+          "message": {
+            "text": "Likely secret embedded directly in environment."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "11b9bd7cf16cc576"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Secrets",
+            "evidence_redacted": "services.synthetic-web.environment.API_SECRET=[REDACTED] (fingerprint=b4aa691747a2)",
+            "remediation": "Use Compose secrets or an external secret manager; remove literals.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-050",
+          "level": "error",
+          "message": {
+            "text": "Likely secret embedded directly in environment."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "72c6798cb646719b"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Secrets",
+            "evidence_redacted": "services.synthetic-web.environment.DATABASE_PASSWORD=[REDACTED] (fingerprint=b4aa691747a2)",
+            "remediation": "Use Compose secrets or an external secret manager; remove literals.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-050",
+          "level": "error",
+          "message": {
+            "text": "Likely secret embedded directly in environment."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "29075185b1d35e51"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Secrets",
+            "evidence_redacted": "services.synthetic-api.environment.TOKEN=[REDACTED] (fingerprint=b4aa691747a2)",
+            "remediation": "Use Compose secrets or an external secret manager; remove literals.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-058",
+          "level": "note",
+          "message": {
+            "text": "No service_secret_expectations declared in policy"
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "6c5f5c6cac8f19c7"
+          },
+          "properties": {
+            "severity": "Informational",
+            "status": "NotApplicable",
+            "category": "Secrets",
+            "evidence_redacted": "No service_secret_expectations declared in policy",
+            "remediation": "Align service secrets with policy allowlists.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-070",
+          "level": "warning",
+          "message": {
+            "text": "Port published on wildcard interfaces (0.0.0.0/::)."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "85febfcf71c4723b"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Networking",
+            "evidence_redacted": "services.synthetic-web publishes port on wildcard/all interfaces (target=8080)",
+            "remediation": "Bind to 127.0.0.1 or a specific interface when possible.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-070",
+          "level": "warning",
+          "message": {
+            "text": "Port published on wildcard interfaces (0.0.0.0/::)."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "9b67affc5cdf01d3"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Networking",
+            "evidence_redacted": "services.synthetic-api publishes port on wildcard/all interfaces (target=3000)",
+            "remediation": "Bind to 127.0.0.1 or a specific interface when possible.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-072",
+          "level": "error",
+          "message": {
+            "text": "Host networking combined with published ports or broad privileges."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "88a0f8986249c17e"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Networking",
+            "evidence_redacted": "services.synthetic-web combines host networking with ports/privileges",
+            "remediation": "Remove host networking and excess privileges.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-073",
+          "level": "note",
+          "message": {
+            "text": "No backend_networks declared in policy"
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "7e5c95197e8edefa"
+          },
+          "properties": {
+            "severity": "Informational",
+            "status": "NotApplicable",
+            "category": "Networking",
+            "evidence_redacted": "No backend_networks declared in policy",
+            "remediation": "Mark backend networks as internal: true when appropriate.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-074",
+          "level": "note",
+          "message": {
+            "text": "No explicit network attachment expectations in policy"
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "345fe8fe42c426c6"
+          },
+          "properties": {
+            "severity": "Informational",
+            "status": "NotApplicable",
+            "category": "Networking",
+            "evidence_redacted": "No explicit network attachment expectations in policy",
+            "remediation": "Attach services only to required networks.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-080",
+          "level": "note",
+          "message": {
+            "text": "No memory limit configured."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "00dcf988479bb284"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Resources",
+            "evidence_redacted": "services.synthetic-web has no memory limit",
+            "remediation": "Set mem_limit or deploy.resources.limits.memory.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-080",
+          "level": "note",
+          "message": {
+            "text": "No memory limit configured."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "2f6532cefffd6d66"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Resources",
+            "evidence_redacted": "services.synthetic-api has no memory limit",
+            "remediation": "Set mem_limit or deploy.resources.limits.memory.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-081",
+          "level": "note",
+          "message": {
+            "text": "No CPU limit configured."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "3d23ad8b0b89e717"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Resources",
+            "evidence_redacted": "services.synthetic-web has no CPU limit",
+            "remediation": "Set cpus or deploy CPU limits.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-081",
+          "level": "note",
+          "message": {
+            "text": "No CPU limit configured."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "b3b36d64f64e455d"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Resources",
+            "evidence_redacted": "services.synthetic-api has no CPU limit",
+            "remediation": "Set cpus or deploy CPU limits.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-082",
+          "level": "note",
+          "message": {
+            "text": "No PID limit configured."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "b6a6e25bbdd03e31"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Resources",
+            "evidence_redacted": "services.synthetic-web has no PID limit",
+            "remediation": "Set pids_limit or deploy pids limits.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-082",
+          "level": "note",
+          "message": {
+            "text": "No PID limit configured."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "64ff6157a6c84094"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Resources",
+            "evidence_redacted": "services.synthetic-api has no PID limit",
+            "remediation": "Set pids_limit or deploy pids limits.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-085",
+          "level": "warning",
+          "message": {
+            "text": "No healthcheck defined for a long-running service."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "0c851eb8256c18fb"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Reliability",
+            "evidence_redacted": "services.synthetic-web has no healthcheck",
+            "remediation": "Add a HEALTHCHECK-compatible Compose healthcheck.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-085",
+          "level": "warning",
+          "message": {
+            "text": "No healthcheck defined for a long-running service."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "9496a9c60b1b0d20"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Reliability",
+            "evidence_redacted": "services.synthetic-api has no healthcheck",
+            "remediation": "Add a HEALTHCHECK-compatible Compose healthcheck.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-089",
+          "level": "note",
+          "message": {
+            "text": "Restart policy absent."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "be5d79b1e4ea6f7d"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Reliability",
+            "evidence_redacted": "services.synthetic-web.restart is absent",
+            "remediation": "Set an explicit restart policy appropriate to the workload.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-089",
+          "level": "note",
+          "message": {
+            "text": "Restart policy absent."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "e66c61cd136014aa"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Reliability",
+            "evidence_redacted": "services.synthetic-api.restart is absent",
+            "remediation": "Set an explicit restart policy appropriate to the workload.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-091",
+          "level": "note",
+          "message": {
+            "text": "No stateful_services declared in policy"
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "dcd7baa6de4aef27"
+          },
+          "properties": {
+            "severity": "Informational",
+            "status": "NotApplicable",
+            "category": "Reliability",
+            "evidence_redacted": "No stateful_services declared in policy",
+            "remediation": "Set stop_grace_period when policy marks the service stateful.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-100",
+          "level": "note",
+          "message": {
+            "text": "Logging driver or options absent."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "935c5a06ace74439"
+          },
+          "properties": {
+            "severity": "Informational",
+            "status": "Fail",
+            "category": "Logging",
+            "evidence_redacted": "services.synthetic-web.logging absent",
+            "remediation": "Configure logging with size/file rotation.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-101",
+          "level": "note",
+          "message": {
+            "text": "json-file logging without max-size."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "e36376cbcb8b44e5"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Logging",
+            "evidence_redacted": "services.synthetic-api.logging missing max-size",
+            "remediation": "Set max-size for json-file driver.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-102",
+          "level": "note",
+          "message": {
+            "text": "json-file logging without max-file."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "a562b3d1a09e3858"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Logging",
+            "evidence_redacted": "services.synthetic-api.logging missing max-file",
+            "remediation": "Set max-file for json-file driver.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-110",
+          "level": "warning",
+          "message": {
+            "text": "Image reference uses the latest tag."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "1b9329968bf2482b"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Image provenance",
+            "evidence_redacted": "services.synthetic-web.image uses latest tag",
+            "remediation": "Pin to a specific version tag or digest.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-110",
+          "level": "warning",
+          "message": {
+            "text": "Image reference uses the latest tag."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "4be1e91cd94e0ba3"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Image provenance",
+            "evidence_redacted": "services.synthetic-api.image uses latest tag",
+            "remediation": "Pin to a specific version tag or digest.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-112",
+          "level": "note",
+          "message": {
+            "text": "Image is not pinned by digest."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "8d7e6e4cbb912998"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Image provenance",
+            "evidence_redacted": "services.synthetic-web.image is not digest-pinned",
+            "remediation": "Pin by digest when policy requires.",
+            "service": "synthetic-web",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-CMP-112",
+          "level": "note",
+          "message": {
+            "text": "Image is not pinned by digest."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "8e44bb65e05558cf"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Image provenance",
+            "evidence_redacted": "services.synthetic-api.image is not digest-pinned",
+            "remediation": "Pin by digest when policy requires.",
+            "service": "synthetic-api",
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/compose/insecure-compose.yml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-001",
+          "level": "warning",
+          "message": {
+            "text": "FROM uses latest tag."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "fd35df89455c669b"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Image provenance",
+            "evidence_redacted": "FROM uses latest (registry.example.invalid/synthetic-app:latest)",
+            "remediation": "Pin FROM to a version tag or digest.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 4,
+                  "endLine": 4
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-003",
+          "level": "note",
+          "message": {
+            "text": "FROM is not digest-pinned."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "c57562791e6914b5"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Image provenance",
+            "evidence_redacted": "FROM is not digest-pinned",
+            "remediation": "Pin by digest when policy requires.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 4,
+                  "endLine": 4
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-011",
+          "level": "error",
+          "message": {
+            "text": "Final USER is root or UID 0."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "2d6badc79acea240"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Identity",
+            "evidence_redacted": "Final USER is root or UID 0",
+            "remediation": "Switch to a non-root user before ENTRYPOINT/CMD.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-021",
+          "level": "error",
+          "message": {
+            "text": "ARG contains secret-like key."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "a56fd54d30fdc35d"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Secrets",
+            "evidence_redacted": "ARG API_SECRET is secret-like",
+            "remediation": "Use BuildKit secret mounts.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 6,
+                  "endLine": 6
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-021",
+          "level": "error",
+          "message": {
+            "text": "ARG contains secret-like key."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "86231b44230cd39e"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Secrets",
+            "evidence_redacted": "ARG DATABASE_PASSWORD is secret-like",
+            "remediation": "Use BuildKit secret mounts.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 7,
+                  "endLine": 7
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-022",
+          "level": "error",
+          "message": {
+            "text": "Likely secret literal in ENV/ARG/RUN/CMD/ENTRYPOINT."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "bb74a39af640122b"
+          },
+          "properties": {
+            "severity": "Critical",
+            "status": "Fail",
+            "category": "Secrets",
+            "evidence_redacted": "ARG contains secret-like literal (fingerprint=b4aa691747a2, value=[REDACTED])",
+            "remediation": "Remove literals; rotate any exposed credentials.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 6,
+                  "endLine": 6
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-024",
+          "level": "error",
+          "message": {
+            "text": "Build secret passed through ARG instead of BuildKit secret mount."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "8678a6a6be6862d1"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Secrets",
+            "evidence_redacted": "Secret-like ARG API_SECRET without BuildKit secret mount",
+            "remediation": "Use RUN --mount=type=secret.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 6,
+                  "endLine": 6
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-024",
+          "level": "error",
+          "message": {
+            "text": "Build secret passed through ARG instead of BuildKit secret mount."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "4166ab6c8fbd7cc2"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Secrets",
+            "evidence_redacted": "Secret-like ARG DATABASE_PASSWORD without BuildKit secret mount",
+            "remediation": "Use RUN --mount=type=secret.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 7,
+                  "endLine": 7
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-032",
+          "level": "error",
+          "message": {
+            "text": "curl or wget piped directly to a shell."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "0d18ac3d6dc1f3f6"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Supply chain",
+            "evidence_redacted": "curl/wget piped directly to a shell",
+            "remediation": "Download, verify checksum/signature, then install.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 11,
+                  "endLine": 11
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-033",
+          "level": "warning",
+          "message": {
+            "text": "Downloaded artifact lacks visible checksum verification nearby."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "e2433095895b52cc"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Supply chain",
+            "evidence_redacted": "Download without visible checksum verification in same step",
+            "remediation": "Verify checksums/signatures in the same layer.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 11,
+                  "endLine": 11
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-050",
+          "level": "error",
+          "message": {
+            "text": "chmod 777 or equivalent broad writable permission."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "b213e811a59389c4"
+          },
+          "properties": {
+            "severity": "High",
+            "status": "Fail",
+            "category": "Filesystem",
+            "evidence_redacted": "chmod 777 or equivalent broad writable permission",
+            "remediation": "Use least privilege modes (e.g. 750/640).",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 15,
+                  "endLine": 15
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-060",
+          "level": "note",
+          "message": {
+            "text": "Shell-form ENTRYPOINT used."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "30932747c344d199"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Process model",
+            "evidence_redacted": "Shell-form ENTRYPOINT used",
+            "remediation": "Prefer exec-form ENTRYPOINT JSON arrays.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 19,
+                  "endLine": 19
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-064",
+          "level": "note",
+          "message": {
+            "text": "HEALTHCHECK missing."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "7364165923b8f30d"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "Fail",
+            "category": "Process model",
+            "evidence_redacted": "HEALTHCHECK missing",
+            "remediation": "Add HEALTHCHECK when policy requires.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-070",
+          "level": "warning",
+          "message": {
+            "text": "COPY/ADD . . without a supplied .dockerignore."
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "49ae673d8a360f96"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "Fail",
+            "category": "Build context",
+            "evidence_redacted": "COPY . . without supplied .dockerignore",
+            "remediation": "Provide .dockerignore and copy narrowly.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                },
+                "region": {
+                  "startLine": 13,
+                  "endLine": 13
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-071",
+          "level": "warning",
+          "message": {
+            "text": "Project-directory analysis not requested"
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "86207d189989e279"
+          },
+          "properties": {
+            "severity": "Medium",
+            "status": "NotApplicable",
+            "category": "Build context",
+            "evidence_redacted": "Project-directory analysis not requested",
+            "remediation": "Add a .dockerignore excluding secrets and VCS metadata.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CSB-DF-072",
+          "level": "note",
+          "message": {
+            "text": ".dockerignore not available for inspection"
+          },
+          "fingerprints": {
+            "primaryLocationLineHash": "83bef769faef276c"
+          },
+          "properties": {
+            "severity": "Low",
+            "status": "NotApplicable",
+            "category": "Build context",
+            "evidence_redacted": ".dockerignore not available for inspection",
+            "remediation": "Exclude .env, keys, .git, credentials, etc.",
+            "service": null,
+            "stage": null
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/dockerfiles/Dockerfile.insecure"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "properties": {
+        "score": 0,
+        "grade": "F",
+        "synthetic": true,
+        "privacy_mode": "masked",
+        "security_notice": "This report is the result of offline static configuration analysis only. It does not inspect image contents, running containers, the Docker daemon, or host runtime protections. A high score is not a security certification."
+      }
+    }
+  ]
+}

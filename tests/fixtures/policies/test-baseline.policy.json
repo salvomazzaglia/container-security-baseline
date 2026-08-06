@@ -1,0 +1,10 @@
+{
+  "name": "test-baseline",
+  "description": "SYNTHETIC test policy",
+  "version": "1.0.0",
+  "fail_on": "High",
+  "minimum_score": 50,
+  "allow_critical_suppressions": false,
+  "disabled_rules": [],
+  "severity_overrides": {}
+}
