@@ -4,10 +4,8 @@
 # NEVER require repository secrets
 # NEVER use pull_request_target
 #
-# Action pinning note: Prefer official actions pinned to verified full-length
-# commit SHAs. SHA verification against the official action repositories was
-# not completed for this workflow, so stable major tags are used instead.
-# Revisit and pin SHAs when verification can be completed.
+# External actions are pinned to verified full-length commit SHAs from the
+# official action repositories (not forks). Version tags are noted in comments.
 
 name: CI
 
@@ -36,12 +34,10 @@ jobs:
 
     steps:
       - name: Check out repository
-        # Prefer SHA pin when verified; using major tag until SHA verification completed
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Set up Python
-        # Prefer SHA pin when verified; using major tag until SHA verification completed
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -78,8 +74,7 @@ jobs:
 
       - name: Upload artifacts
         if: always()
-        # Prefer SHA pin when verified; using major tag until SHA verification completed
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ci-artifacts-${{ matrix.os }}-py${{ matrix.python-version }}
           path: |
